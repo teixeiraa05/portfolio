@@ -1,6 +1,7 @@
 import { Header } from './components/Header'
 import { About } from './sections/About'
 import { Projects } from './sections/Projects'
+import { Experience } from './sections/Experience'
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
       <main id="content">
         <About />
         <Projects />
+        <Experience />
       </main>
     </div>
   )

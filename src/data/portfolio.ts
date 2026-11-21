@@ -278,3 +278,49 @@ export const projects: Project[] = [
       'RC Lab 2 builds an FTP downloader in C to show how an application-level protocol works over TCP. It takes an FTP URL, handles the server’s replies, opens a separate passive-mode data connection, and writes the file locally while reporting download progress.',
   },
 ]
+
+export const experience = [
+  {
+    role: 'Technology Department Member',
+    organizations: [{ name: 'JuniFEUP', logo: '/organizations/junifeup.png' }],
+    start: 'Oct 2026',
+    context: 'Porto',
+  },
+  {
+    role: 'Seasonal Lifeguard',
+    organizations: [
+      {
+        name: 'Bombeiros Voluntários de Valadares',
+        logo: '/organizations/bombeiros-valadares.webp',
+      },
+      {
+        name: 'Instituto de Socorros a Náufragos',
+        logo: '/organizations/isn.png',
+      },
+    ],
+    start: 'Jun 2025',
+    context: 'Valadares',
+  },
+  {
+    role: 'Gulbenkian Merit Scholar',
+    organizations: [
+      {
+        name: 'Fundação Calouste Gulbenkian',
+        logo: '/organizations/gulbenkian.svg',
+      },
+    ],
+    start: 'Sep 2024',
+    context: 'Portugal',
+  },
+  {
+    role: 'Informatics and Computing Engineering Student',
+    organizations: [
+      {
+        name: 'Faculty of Engineering, University of Porto',
+        logo: '/organizations/feup.webp',
+      },
+    ],
+    start: 'Sep 2024',
+    context: 'BSc · Expected Jun 2027',
+  },
+]

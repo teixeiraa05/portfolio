@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <!-- Remove near-white paper from logos supplied on an opaque background. -->
+  <filter id="paper" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -6 -6 -6 0 17.8"/>
+    <feComposite in2="SourceGraphic" operator="in"/>
+  </filter>
+</svg>
