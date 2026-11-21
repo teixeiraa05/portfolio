@@ -2,6 +2,7 @@ import { Header } from './components/Header'
 import { About } from './sections/About'
 import { Projects } from './sections/Projects'
 import { Experience } from './sections/Experience'
+import { GitHubActivity } from './sections/GitHubActivity'
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
         <About />
         <Projects />
         <Experience />
+        <GitHubActivity />
       </main>
     </div>
   )
