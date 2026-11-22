@@ -7,6 +7,7 @@ Use `npm run build`, `npm run lint` and `npm run format:check` to validate chang
 
 Project descriptions, dates, experience and contact details live in `src/data/portfolio.ts`.
 Page sections live in `src/sections` and shared interface components in `src/components`.
+Add shadcn/ui components with `npx shadcn@latest add <component>`. The CLI places UI primitives in `src/components/ui`.
 
 The contribution calendar uses the checked-in snapshot in `src/data/github.json`.
 Run `npm run activity:refresh` to update that snapshot before building.

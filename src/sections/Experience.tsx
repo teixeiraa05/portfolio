@@ -16,7 +16,7 @@ export function Experience() {
                 {item.organizations.map(({ name, logo }) => (
                   <li
                     key={name}
-                    className="flex items-center gap-2 text-sm text-muted"
+                    className="flex items-center gap-2 text-sm text-muted-foreground"
                   >
                     <img
                       className="organization-logo h-4 w-5 shrink-0 object-contain"
@@ -28,9 +28,11 @@ export function Experience() {
                   </li>
                 ))}
               </ul>
-              <small className="text-sm text-muted">{item.context}</small>
+              <small className="text-sm text-muted-foreground">
+                {item.context}
+              </small>
             </div>
-            <span className="pt-0.5 font-mono text-xs whitespace-nowrap text-muted">
+            <span className="pt-0.5 font-mono text-xs whitespace-nowrap text-muted-foreground">
               {item.start} – now
             </span>
           </li>

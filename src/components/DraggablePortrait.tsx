@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react'
 import type { PointerEvent } from 'react'
+import { Skeleton } from '@/components/ui/skeleton'
 import portrait from '../assets/rodrigo.webp'
 
 type Point = { x: number; y: number }
@@ -78,6 +79,9 @@ export function DraggablePortrait({
   const [pin, setPin] = useState(readPin)
   const [held, setHeld] = useState(false)
   const [offset, setOffset] = useState<Point>({ x: 0, y: 0 })
+  const [portraitPending, setPortraitPending] = useState(true)
+
+  const finishPortraitLoad = () => setPortraitPending(false)
 
   useLayoutEffect(() => {
     const anchor = slot.current!
@@ -246,13 +250,10 @@ export function DraggablePortrait({
     photo.current?.focus({ preventScroll: true })
   }
   return (
-    <div
-      className="portrait-slot relative mr-5 h-[11.9rem] w-40 max-[680px]:mr-1.5 max-[680px]:h-[8.9rem] max-[680px]:w-[7.2rem]"
-      ref={slot}
-    >
+    <div className="portrait-slot" ref={slot}>
       {pin && (
         <button
-          className="absolute inset-0 cursor-pointer rounded-sm border border-dashed border-muted bg-transparent font-mono text-xs text-muted hover:text-accent"
+          className="absolute inset-0 cursor-pointer rounded-sm border border-dashed border-muted-foreground bg-transparent font-mono text-xs text-muted-foreground hover:text-primary"
           type="button"
           onClick={reset}
         >
@@ -275,15 +276,26 @@ export function DraggablePortrait({
         onLostPointerCapture={(event) => finish(event, false)}
         onDoubleClick={reset}
       >
-        <img
-          src={portrait}
-          alt="Rodrigo Teixeira outdoors by the water"
-          width="535"
-          height="800"
-          draggable={false}
-          className="block size-full object-cover object-[50%_46%]"
-          fetchPriority="high"
-        />
+        <span className="relative block size-full">
+          {portraitPending && (
+            <Skeleton
+              as="span"
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 rounded-none bg-muted"
+            />
+          )}
+          <img
+            src={portrait}
+            alt="Rodrigo Teixeira outdoors by the water"
+            width="535"
+            height="800"
+            draggable={false}
+            className="block size-full object-cover object-[50%_46%]"
+            fetchPriority="high"
+            onLoad={finishPortraitLoad}
+            onError={finishPortraitLoad}
+          />
+        </span>
       </button>
       <span className="sr-only" id="portrait-help">
         Drag and release the photo. The mascot brings it back after ten seconds.

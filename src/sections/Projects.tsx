@@ -32,7 +32,7 @@ export function Projects() {
           name="portfolio-projects"
           key={project.id}
         >
-          <summary className="grid grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-1 px-0.5 py-4 hover:text-accent min-[501px]:grid-cols-[auto_1fr_auto_auto] min-[501px]:gap-4">
+          <summary className="grid grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-1 px-0.5 py-4 hover:text-primary min-[501px]:grid-cols-[auto_1fr_auto_auto] min-[501px]:gap-4">
             <span
               className={`project-icon grid size-10 place-items-center rounded-lg ${project.id} ${projectIconStyles[project.id]}`}
             >
@@ -52,17 +52,17 @@ export function Projects() {
                 {project.title}
                 {project.ongoing && <span className="project-status">Now</span>}
               </h3>
-              <p className="text-sm leading-relaxed text-muted group-open:hidden">
+              <p className="text-sm leading-relaxed text-muted-foreground group-open:hidden">
                 {project.summary}
               </p>
             </div>
             <time
-              className="col-start-2 row-start-2 font-mono text-xs whitespace-nowrap text-muted min-[501px]:col-auto min-[501px]:row-auto"
+              className="col-start-2 row-start-2 font-mono text-xs whitespace-nowrap text-muted-foreground min-[501px]:col-auto min-[501px]:row-auto"
               dateTime={project.month}
             >
               {project.date}
             </time>
-            <span className="col-start-3 row-start-1 text-muted transition-transform group-open:rotate-45 motion-reduce:transition-none min-[501px]:col-auto min-[501px]:row-auto">
+            <span className="col-start-3 row-start-1 text-muted-foreground transition-transform group-open:rotate-45 motion-reduce:transition-none min-[501px]:col-auto min-[501px]:row-auto">
               <Icon name="plus" size={14} />
             </span>
           </summary>

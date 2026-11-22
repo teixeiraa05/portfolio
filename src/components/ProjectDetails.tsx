@@ -10,7 +10,9 @@ export function ProjectDetails({ project }: { project: Project }) {
     <div className="grid gap-4 pb-6 min-[501px]:ml-14">
       <div>
         {course && (
-          <div className="mb-1 font-mono text-xs text-muted">{course}</div>
+          <div className="mb-1 font-mono text-xs text-muted-foreground">
+            {course}
+          </div>
         )}
         <p className="max-w-prose text-sm leading-relaxed">{detail}</p>
       </div>
@@ -19,7 +21,7 @@ export function ProjectDetails({ project }: { project: Project }) {
         {technologies.map((tech) => (
           <li
             key={tech}
-            className="flex items-center gap-1.5 whitespace-nowrap text-xs text-muted"
+            className="flex items-center gap-1.5 whitespace-nowrap text-xs text-muted-foreground"
           >
             <img
               className="size-5 rounded-sm bg-white object-contain p-0.5"

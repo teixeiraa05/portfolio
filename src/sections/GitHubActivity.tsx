@@ -27,7 +27,7 @@ function ContributionCalendar() {
     >
       <div className="min-w-132">
         <div
-          className="mb-1.5 grid grid-cols-53 font-mono text-xs text-muted"
+          className="mb-1.5 grid grid-cols-53 font-mono text-xs text-muted-foreground"
           aria-hidden="true"
         >
           {days.map(

@@ -35,12 +35,12 @@ export function Header() {
     }
   }, [])
   return (
-    <header className="flex items-center justify-between border-b border-line py-[1.15rem] min-[501px]:pt-[1.6rem] min-[501px]:pb-[1.35rem]">
+    <header className="header-layout">
       <nav className="flex items-center gap-4">
         <span className="monogram" aria-hidden="true">
           rt<span className="brand-accent">.</span>
         </span>
-        <span className="font-mono text-muted" aria-hidden="true">
+        <span className="font-mono text-muted-foreground" aria-hidden="true">
           /
         </span>
         <a
@@ -50,13 +50,13 @@ export function Header() {
           aria-keyshortcuts="h"
           aria-current="page"
         >
-          <kbd aria-hidden="true" className="text-accent">
+          <kbd aria-hidden="true" className="text-primary">
             [h]
           </kbd>{' '}
           home
         </a>
       </nav>
-      <div className="flex items-center gap-1.5 font-mono text-xs text-muted">
+      <div className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
         <Icon name="pin" size={15} /> Porto, PT
         <ThemeToggle />
       </div>

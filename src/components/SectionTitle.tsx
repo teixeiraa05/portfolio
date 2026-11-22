@@ -12,7 +12,7 @@ export function SectionTitle({
       <h2 id={id}>{title}</h2>
       <span className="h-px flex-1 bg-line" />
       {aside && (
-        <span className="font-mono text-xs whitespace-nowrap text-muted">
+        <span className="font-mono text-xs whitespace-nowrap text-muted-foreground">
           {aside}
         </span>
       )}

@@ -55,7 +55,7 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      className="ml-2 grid size-[2.15rem] cursor-pointer place-items-center rounded-full border border-line bg-surface text-ink hover:border-current hover:text-accent"
+      className="ml-2 grid size-[2.15rem] cursor-pointer place-items-center rounded-full border border-line bg-surface text-ink hover:border-current hover:text-primary"
       aria-label="Dark mode"
       aria-pressed={theme === 'dark'}
       title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
