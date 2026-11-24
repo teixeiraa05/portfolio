@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SectionTitle } from '../components/SectionTitle'
 import activity from '../data/activity.json'
 
@@ -15,13 +15,33 @@ const sources = [
 ] as const
 type Source = (typeof sources)[number]
 
-const snapshots: Record<Source['id'], Snapshot | null> = activity
+const directusUrl =
+  import.meta.env.VITE_DIRECTUS_URL?.replace(/\/$/, '') ||
+  (import.meta.env.DEV ? 'http://127.0.0.1:8055' : undefined)
 
 const months = new Intl.DateTimeFormat('en', {
   month: 'short',
   timeZone: 'UTC',
 })
 const dayLength = 86400000
+const refreshInterval = 60 * 60 * 1000
+
+const isSnapshot = (value: unknown): value is Snapshot => {
+  if (!value || typeof value !== 'object') return false
+  const { start, end, levels, total } = value as Partial<Snapshot>
+  return (
+    typeof start === 'string' &&
+    typeof end === 'string' &&
+    /^\d{4}-\d{2}-\d{2}$/.test(start) &&
+    /^\d{4}-\d{2}-\d{2}$/.test(end) &&
+    Date.parse(end) - Date.parse(start) === 364 * dayLength &&
+    typeof levels === 'string' &&
+    /^[0-4]{365}$/.test(levels) &&
+    typeof total === 'number' &&
+    Number.isSafeInteger(total) &&
+    total >= 0
+  )
+}
 
 const activityAmount = (count: number, unit: Source['unit']) =>
   `${count.toLocaleString('en')} ${unit}${count === 1 ? '' : 's'}`
@@ -95,7 +115,56 @@ function ContributionCalendar({
 
 export function ContributionActivity() {
   const [source, setSource] = useState<Source>(sources[0])
-  const snapshot = snapshots[source.id]
+  const [snapshots, setSnapshots] = useState<
+    Partial<Record<Source['id'], Snapshot>>
+  >({})
+  const liveSnapshot = snapshots[source.id]
+  const snapshot = liveSnapshot ?? activity[source.id]
+
+  useEffect(() => {
+    if (!directusUrl) return
+    const controller = new AbortController()
+
+    const loadActivity = async () => {
+      try {
+        const response = await fetch(
+          `${directusUrl}/items/activity_calendars?fields=id,snapshot&limit=2`,
+          {
+            signal: AbortSignal.any([
+              controller.signal,
+              AbortSignal.timeout(10_000),
+            ]),
+          },
+        )
+        if (!response.ok) throw new Error(`HTTP ${response.status}`)
+        const { data } = await response.json()
+        if (!Array.isArray(data)) throw new Error('Invalid activity response.')
+
+        const updates: Partial<Record<Source['id'], Snapshot>> = {}
+        for (const item of data) {
+          if (
+            (item?.id === 'github' || item?.id === 'gitlab') &&
+            isSnapshot(item.snapshot)
+          ) {
+            const id: Source['id'] = item.id
+            updates[id] = item.snapshot
+          }
+        }
+        if (!controller.signal.aborted)
+          setSnapshots((current) => ({ ...current, ...updates }))
+      } catch (error) {
+        if (!controller.signal.aborted)
+          console.warn('Could not load code activity.', error)
+      }
+    }
+
+    void loadActivity()
+    const interval = window.setInterval(loadActivity, refreshInterval)
+    return () => {
+      controller.abort()
+      window.clearInterval(interval)
+    }
+  }, [])
 
   return (
     <section className="mb-10 sm:mb-13" aria-labelledby="activity">
@@ -121,7 +190,14 @@ export function ContributionActivity() {
           </div>
           <div aria-live="polite" className="text-sm">
             {snapshot && (
-              <strong>{activityAmount(snapshot.total, source.unit)}</strong>
+              <>
+                <strong>{activityAmount(snapshot.total, source.unit)}</strong>
+                {!liveSnapshot && (
+                  <span className="ml-2 text-muted-foreground">
+                    through <time dateTime={snapshot.end}>{snapshot.end}</time>
+                  </span>
+                )}
+              </>
             )}
           </div>
         </div>
