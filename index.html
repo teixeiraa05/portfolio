@@ -28,100 +28,24 @@
   </head>
   <body>
     <div id="root">
-      <div class="page-shell">
-        <p class="sr-only" role="status">Loading portfolio</p>
-        <div aria-hidden="true">
-          <div class="header-layout">
-            <div class="flex items-center gap-4">
-              <div class="skeleton-block h-7 w-9"></div>
-              <div class="skeleton-block h-3 w-14"></div>
-            </div>
-            <div class="flex items-center gap-3">
-              <div class="skeleton-block h-3 w-16"></div>
-              <div class="skeleton-block size-[2.15rem] rounded-full"></div>
-            </div>
-          </div>
-          <div class="about-layout">
-            <div class="min-w-0">
-              <div
-                class="skeleton-block h-[clamp(2rem,5.6vw,4.4rem)] w-100 max-w-[calc(100%-5.6rem)] min-[501px]:max-w-full"
-              ></div>
-              <div class="bio flex flex-col gap-2 py-1.5">
-                <div class="skeleton-block h-3.5 w-100 max-w-full"></div>
-                <div class="skeleton-block h-3.5 w-76 max-w-[85%]"></div>
-              </div>
-              <div class="flex gap-5">
-                <div class="skeleton-block h-4 w-12"></div>
-                <div class="skeleton-block h-4 w-15"></div>
-                <div class="skeleton-block h-4 w-17"></div>
-              </div>
-            </div>
-            <div class="portrait-slot skeleton-block rotate-4"></div>
-          </div>
-          <div class="mb-10 sm:mb-13">
-            <div class="mb-5 flex items-center gap-3 min-[681px]:gap-5">
-              <div class="skeleton-block h-8 w-27"></div>
-              <div class="h-px flex-1 bg-line"></div>
-              <div class="skeleton-block h-3 w-18"></div>
-            </div>
-            <div class="skeleton-project">
-              <div class="skeleton-block size-10 rounded-lg"></div>
-              <div class="flex flex-col gap-2">
-                <div class="skeleton-block h-3.5 w-32 max-w-full"></div>
-                <div class="skeleton-block h-3 w-72 max-w-[95%]"></div>
-              </div>
-              <div class="skeleton-block skeleton-date"></div>
-            </div>
-            <div class="skeleton-project">
-              <div class="skeleton-block size-10 rounded-lg"></div>
-              <div class="flex flex-col gap-2">
-                <div class="skeleton-block h-3.5 w-24 max-w-full"></div>
-                <div class="skeleton-block h-3 w-58 max-w-[90%]"></div>
-              </div>
-              <div class="skeleton-block skeleton-date"></div>
-            </div>
-            <div class="skeleton-project">
-              <div class="skeleton-block size-10 rounded-lg"></div>
-              <div class="flex flex-col gap-2">
-                <div class="skeleton-block h-3.5 w-40 max-w-full"></div>
-                <div class="skeleton-block h-3 w-78 max-w-full"></div>
-              </div>
-              <div class="skeleton-block skeleton-date"></div>
-            </div>
-            <div class="skeleton-project">
-              <div class="skeleton-block size-10 rounded-lg"></div>
-              <div class="flex flex-col gap-2">
-                <div class="skeleton-block h-3.5 w-29 max-w-full"></div>
-                <div class="skeleton-block h-3 w-65 max-w-[95%]"></div>
-              </div>
-              <div class="skeleton-block skeleton-date"></div>
-            </div>
-          </div>
-          <div class="mb-10 sm:mb-13">
-            <div class="mb-5 flex items-center gap-3 min-[681px]:gap-5">
-              <div class="skeleton-block h-8 w-36"></div>
-              <div class="h-px flex-1 bg-line"></div>
-            </div>
-            <div class="grid gap-5">
-              <div class="timeline-entry relative grid gap-2 pl-6">
-                <div class="skeleton-block h-3.5 w-37"></div>
-                <div class="skeleton-block h-3 w-48"></div>
-              </div>
-              <div class="timeline-entry relative grid gap-2 pl-6">
-                <div class="skeleton-block h-3.5 w-29"></div>
-                <div class="skeleton-block h-3 w-40"></div>
-              </div>
-            </div>
-          </div>
-          <div class="mb-10 sm:mb-13">
-            <div class="mb-5 flex items-center gap-3 min-[681px]:gap-5">
-              <div class="skeleton-block h-8 w-40"></div>
-              <div class="h-px flex-1 bg-line"></div>
-            </div>
-            <div class="rounded-xl border border-line bg-surface p-5">
-              <div class="skeleton-block mb-4 h-4 w-36"></div>
-              <div class="skeleton-block h-23 w-full"></div>
-            </div>
+      <div class="grid min-h-dvh place-items-center px-4">
+        <div
+          class="flex w-full max-w-84 items-center gap-4 rounded-lg border border-[#3a4547] bg-[#202526] px-4 py-3 shadow-lg"
+          role="status"
+        >
+          <img
+            class="block size-9 shrink-0"
+            src="/favicon.svg"
+            alt=""
+            width="36"
+            height="36"
+          />
+          <div class="min-w-0 flex-1">
+            <p class="mb-2 font-mono text-xs text-[#e3e9e6]">
+              <span class="text-[#95d2ac]" aria-hidden="true">&gt;</span>
+              Loading portfolio
+            </p>
+            <div class="terminal-loading-track" aria-hidden="true"></div>
           </div>
         </div>
       </div>

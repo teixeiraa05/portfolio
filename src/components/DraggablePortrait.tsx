@@ -7,7 +7,6 @@ import {
   useState,
 } from 'react'
 import type { PointerEvent } from 'react'
-import { Skeleton } from '@/components/ui/skeleton'
 import portrait from '../assets/rodrigo.webp'
 
 type Point = { x: number; y: number }
@@ -79,9 +78,6 @@ export function DraggablePortrait({
   const [pin, setPin] = useState(readPin)
   const [held, setHeld] = useState(false)
   const [offset, setOffset] = useState<Point>({ x: 0, y: 0 })
-  const [portraitPending, setPortraitPending] = useState(true)
-
-  const finishPortraitLoad = () => setPortraitPending(false)
 
   useLayoutEffect(() => {
     const anchor = slot.current!
@@ -276,26 +272,15 @@ export function DraggablePortrait({
         onLostPointerCapture={(event) => finish(event, false)}
         onDoubleClick={reset}
       >
-        <span className="relative block size-full">
-          {portraitPending && (
-            <Skeleton
-              as="span"
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0 rounded-none bg-muted"
-            />
-          )}
-          <img
-            src={portrait}
-            alt="Rodrigo Teixeira outdoors by the water"
-            width="535"
-            height="800"
-            draggable={false}
-            className="block size-full object-cover object-[50%_46%]"
-            fetchPriority="high"
-            onLoad={finishPortraitLoad}
-            onError={finishPortraitLoad}
-          />
-        </span>
+        <img
+          src={portrait}
+          alt="Rodrigo Teixeira outdoors by the water"
+          width="535"
+          height="800"
+          draggable={false}
+          className="block size-full object-cover object-[50%_46%]"
+          fetchPriority="high"
+        />
       </button>
       <span className="sr-only" id="portrait-help">
         Drag and release the photo. The mascot brings it back after ten seconds.
