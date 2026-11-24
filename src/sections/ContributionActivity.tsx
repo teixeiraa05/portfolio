@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { SectionTitle } from '../components/SectionTitle'
 import activity from '../data/activity.json'
 
@@ -7,6 +7,7 @@ type Snapshot = {
   end: string
   total: number
   levels: string
+  counts?: number[]
 }
 
 const sources = [
@@ -23,12 +24,18 @@ const months = new Intl.DateTimeFormat('en', {
   month: 'short',
   timeZone: 'UTC',
 })
+const dates = new Intl.DateTimeFormat('en-US', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+})
 const dayLength = 86400000
 const refreshInterval = 60 * 60 * 1000
 
 const isSnapshot = (value: unknown): value is Snapshot => {
   if (!value || typeof value !== 'object') return false
-  const { start, end, levels, total } = value as Partial<Snapshot>
+  const { start, end, levels, total, counts } = value as Partial<Snapshot>
   return (
     typeof start === 'string' &&
     typeof end === 'string' &&
@@ -39,7 +46,11 @@ const isSnapshot = (value: unknown): value is Snapshot => {
     /^[0-4]{365}$/.test(levels) &&
     typeof total === 'number' &&
     Number.isSafeInteger(total) &&
-    total >= 0
+    total >= 0 &&
+    (counts === undefined ||
+      (Array.isArray(counts) &&
+        counts.length === levels.length &&
+        counts.every((count) => Number.isSafeInteger(count) && count >= 0)))
   )
 }
 
@@ -53,6 +64,12 @@ function ContributionCalendar({
   snapshot: Snapshot
   source: Source
 }) {
+  const graph = useRef<HTMLDivElement>(null)
+  const [tooltip, setTooltip] = useState<{
+    day: number
+    left: number
+    top: number
+  } | null>(null)
   const firstDay = new Date(snapshot.start)
   const firstWeekday = firstDay.getUTCDay()
   const weekCount = Math.ceil((firstWeekday + snapshot.levels.length) / 7)
@@ -61,6 +78,7 @@ function ContributionCalendar({
     return {
       level,
       date: new Date(firstDay.getTime() + index * dayLength),
+      count: snapshot.counts?.[index],
       column: weekCount - Math.floor(offset / 7),
       row: (offset % 7) + 1,
     }
@@ -74,41 +92,80 @@ function ContributionCalendar({
       .map(({ date, column }) => [column, months.format(date)]),
   )
 
+  const showTooltip = (cell: HTMLElement, day: number) => {
+    const graphBounds = graph.current?.getBoundingClientRect()
+    if (!graphBounds) return
+    const cellBounds = cell.getBoundingClientRect()
+    setTooltip({
+      day,
+      left: cellBounds.left + cellBounds.width / 2 - graphBounds.left,
+      top: cellBounds.top - graphBounds.top - 6,
+    })
+  }
+
+  const hoveredDay = tooltip && days[tooltip.day]
+
   return (
     <div
-      className="overflow-x-auto"
+      ref={graph}
+      className="relative"
       role="img"
       aria-label={`${source.label} activity from ${snapshot.start} through ${snapshot.end}, ${activityAmount(snapshot.total, source.unit)}. Color intensity indicates daily activity.`}
     >
-      <div className="min-w-132">
-        <div
-          className="mb-1.5 grid grid-cols-53 gap-x-[3px] font-mono text-xs text-muted-foreground"
-          aria-hidden="true"
-        >
-          {[...monthLabels].map(([column, label]) => (
-            <span
-              key={column}
-              className="row-start-1"
-              style={{ gridColumn: column }}
-            >
-              {label}
-            </span>
-          ))}
-        </div>
-        <div
-          className="grid grid-cols-53 grid-rows-[repeat(7,auto)] gap-[3px]"
-          aria-hidden="true"
-        >
-          {days.map(({ level, date, column, row }) => (
-            <span
-              key={date.getTime()}
-              className="contribution-day"
-              data-level={level}
-              style={{ gridColumn: column, gridRow: row }}
-            />
-          ))}
+      <div
+        className="overflow-x-auto"
+        onPointerLeave={() => setTooltip(null)}
+        onScroll={() => setTooltip(null)}
+      >
+        <div className="min-w-132">
+          <div
+            className="mb-1.5 grid grid-cols-53 gap-x-[3px] font-mono text-xs text-muted-foreground"
+            aria-hidden="true"
+          >
+            {[...monthLabels].map(([column, label]) => (
+              <span
+                key={column}
+                className="row-start-1"
+                style={{ gridColumn: column }}
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+          <div
+            className="grid grid-cols-53 grid-rows-[repeat(7,auto)] gap-[3px]"
+            aria-hidden="true"
+          >
+            {days.map(({ level, date, column, row }, index) => (
+              <span
+                key={date.getTime()}
+                className="contribution-day hover:outline hover:outline-primary"
+                data-level={level}
+                style={{ gridColumn: column, gridRow: row }}
+                onPointerEnter={(event) =>
+                  showTooltip(event.currentTarget, index)
+                }
+                onPointerLeave={() => setTooltip(null)}
+              />
+            ))}
+          </div>
         </div>
       </div>
+      {tooltip && hoveredDay && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute z-10 w-max max-w-full -translate-x-1/2 -translate-y-full rounded-md border border-line bg-muted px-2.5 py-1.5 text-center text-xs text-ink shadow-lg"
+          style={{
+            left: `clamp(min(8rem, 50%), ${tooltip.left}px, max(calc(100% - 8rem), 50%))`,
+            top: tooltip.top,
+          }}
+        >
+          {hoveredDay.count === undefined
+            ? `Activity level ${hoveredDay.level} of 4`
+            : activityAmount(hoveredDay.count, source.unit)}{' '}
+          on {dates.format(hoveredDay.date)}
+        </span>
+      )}
     </div>
   )
 }
@@ -203,7 +260,7 @@ export function ContributionActivity() {
         </div>
         {snapshot ? (
           <ContributionCalendar
-            key={source.id}
+            key={`${source.id}-${snapshot.start}`}
             snapshot={snapshot}
             source={source}
           />
