@@ -10,7 +10,6 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "preview": "vite preview",
-    "activity:refresh": "node scripts/refresh-activity.mjs",
     "cv:refresh": "npm run build && node scripts/refresh-cv.mjs",
     "cv:watch": "node scripts/watch-cv.mjs"
   },
