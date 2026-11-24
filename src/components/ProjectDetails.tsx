@@ -4,7 +4,15 @@ import { Icon } from './Icon'
 import { ProjectMedia } from './ProjectMedia'
 
 export function ProjectDetails({ project }: { project: Project }) {
-  const { course, detail, technologies, url, playUrl, youtubeId } = project
+  const {
+    course,
+    detail,
+    contributions,
+    technologies,
+    url,
+    playUrl,
+    youtubeId,
+  } = project
 
   return (
     <div className="grid gap-4 pb-6 min-[501px]:ml-14">
@@ -15,6 +23,14 @@ export function ProjectDetails({ project }: { project: Project }) {
           </div>
         )}
         <p className="max-w-prose text-sm leading-relaxed">{detail}</p>
+      </div>
+      <div>
+        <h4 className="m-0 text-sm font-semibold">My contributions</h4>
+        <ul className="mt-1 max-w-prose list-disc space-y-1 pl-4 text-sm leading-relaxed">
+          {contributions.map((contribution) => (
+            <li key={contribution}>{contribution}</li>
+          ))}
+        </ul>
       </div>
 
       <ul className="flex list-none flex-wrap gap-x-4 gap-y-2 p-0">

@@ -22,6 +22,7 @@ export type Project = {
   month: string
   technologies: Technology[]
   course?: string
+  contributions: string[]
   detail: string
   url?: string
   ongoing?: boolean
@@ -34,6 +35,10 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: 'elio',
+    contributions: [
+      'Contributed to a Java terminal role-playing game in which players choose a character class and fight increasingly difficult waves of enemies.',
+      'The project brought combat, character progression, and the terminal interface together so players could adapt their strategy through upgrades.',
+    ],
     galleries: [
       {
         title: 'Screenshots',
@@ -56,6 +61,10 @@ export const projects: Project[] = [
   },
   {
     id: 'flow',
+    contributions: [
+      'Worked on translating conference reviewer assignment into a network-flow problem, with constraints for reviewer capacity and subject expertise.',
+      'Used Ford-Fulkerson and Edmonds-Karp to maximize valid assignments while respecting reviewer workloads.',
+    ],
     title: 'MaxFlow',
     date: 'Mar 2026',
     month: '2026-03',
@@ -63,11 +72,15 @@ export const projects: Project[] = [
     technologies: ['C++'],
     course: 'DA Project 1',
     detail:
-      'MaxFlow helps scientific conference organizers assign submissions to qualified reviewers without overloading them. It represents papers, reviewers, and capacity limits as a flow network, then uses Ford–Fulkerson and Edmonds–Karp to find as many valid assignments as possible.',
+      'MaxFlow helps scientific conference organizers assign submissions to qualified reviewers without overloading them. It represents papers, reviewers, and capacity limits as a flow network, then uses Ford-Fulkerson and Edmonds-Karp to find as many valid assignments as possible.',
     url: 'https://github.com/teixeiraa05/da-project',
   },
   {
     id: 'color',
+    contributions: [
+      'Compared four compiler register-allocation strategies in C++ and used interference graphs to model which values are live at the same time.',
+      'Examined how live-range splitting and spilling values to memory affect allocation when registers are limited. The project earned 18.6/20.',
+    ],
     title: 'Graph Coloring',
     date: 'May 2026',
     month: '2026-05',
@@ -80,6 +93,10 @@ export const projects: Project[] = [
   },
   {
     id: 'pulse',
+    contributions: [
+      'Contributed to a gym management application built with PHP, SQLite, and JavaScript, where members book classes and personal training.',
+      'Helped design workflows for trainers to manage schedules and rosters and for administrators to oversee memberships, capacity, and equipment.',
+    ],
     galleries: [
       {
         title: 'Public pages',
@@ -164,10 +181,15 @@ export const projects: Project[] = [
   },
   {
     id: 'clutch',
+    contributions: [
+      'Served as Product Owner and developer on a three-person Agile/Scrum team, clarifying requirements, writing user stories, and prioritizing the backlog.',
+      'Coordinated with teammates in sprint planning, reviews, and retrospectives.',
+      'Implemented features for a mobile app that connects course-based tutoring requests with live chat and QR-code session verification.',
+    ],
     youtubeId: 'JZyJXNlv0VE',
     videoPoster: '/projects/clutch/walkthrough-poster.webp',
     title: 'Clutch',
-    date: 'Feb–Jun 2026',
+    date: 'Feb-Jun 2026',
     month: '2026-06',
     summary:
       'A campus peer-tutoring app built by a three-person Software Engineering team.',
@@ -198,6 +220,10 @@ export const projects: Project[] = [
   },
   {
     id: 'sushi',
+    contributions: [
+      'Applied MINIX coursework on input and graphics drivers to a playable arcade game in C.',
+      'Contributed to a project that combines mouse-driven slicing and keyboard-controlled boss encounters. Seeded rounds let players replay the same starting conditions and compare results.',
+    ],
     galleries: [
       {
         title: 'Screenshots',
@@ -231,6 +257,10 @@ export const projects: Project[] = [
   {
     ongoing: true,
     id: 'openfloat',
+    contributions: [
+      'Developing an open-source marketplace for Counter-Strike 2 items. The project translates collector needs into listings that show item-specific details. The marketplace is designed to support buying, selling, and auctions.',
+      'Worked on the backoffice for administration of the platform, including user management, item moderation, and analytics.',
+    ],
     galleries: [
       {
         title: 'Screenshots',
@@ -257,7 +287,11 @@ export const projects: Project[] = [
   },
   {
     id: 'serial',
-    title: 'RC Lab 1',
+    contributions: [
+      'Developed a file-transfer application in C over an RS-232 serial link using Stop-and-Wait ARQ.',
+      'Worked across packet framing and link-layer reliability, using acknowledgements and retransmissions so the receiver can reconstruct a file when the connection introduces errors.',
+    ],
+    title: 'File Transfer Application',
     date: 'Nov 2026',
     month: '2026-11',
     summary: 'Reliable file transfer over a serial connection.',
@@ -265,17 +299,6 @@ export const projects: Project[] = [
     detail:
       'RC Lab 1 demonstrates how two computers can transfer a file over an RS-232 serial link even when the connection introduces errors. The application splits a file into packets, and the link layer uses acknowledgements and retransmissions so the receiver can reconstruct the original file.',
     url: 'https://github.com/teixeiraa05/rc_project',
-  },
-  {
-    ongoing: true,
-    id: 'tcp',
-    title: 'RC Lab 2',
-    date: 'Nov 2026',
-    month: '2026-11',
-    summary: 'An FTP client that downloads files over TCP.',
-    technologies: ['C', 'Sockets'],
-    detail:
-      'RC Lab 2 builds an FTP downloader in C to show how an application-level protocol works over TCP. It takes an FTP URL, handles the server’s replies, opens a separate passive-mode data connection, and writes the file locally while reporting download progress.',
   },
 ]
 
