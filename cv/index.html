@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fafaf8" />
+    <meta
+      name="description"
+      content="Rodrigo Teixeira, Informatics and Computing Engineering student at FEUP. Curriculum vitae, project contributions and downloadable PDFs."
+    />
+    <title>Rodrigo Teixeira — Curriculum Vitae</title>
+    <script>
+      let theme
+      try {
+        theme = localStorage.getItem('portfolio-theme')
+      } catch {
+        // Storage may be disabled.
+      }
+      document.documentElement.dataset.theme =
+        theme === 'light' || theme === 'dark'
+          ? theme
+          : matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light'
+    </script>
+    <link rel="stylesheet" href="/src/index.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript
+      >View the
+      <a href="/RodrigoTeixeira_CV.pdf" target="_blank" rel="noopener"
+        >compact CV</a
+      >
+      or the
+      <a href="/extended_RodrigoTeixeira_CV.pdf" target="_blank" rel="noopener"
+        >extended CV</a
+      >
+      in a new tab.</noscript
+    >
+    <script type="module" src="/src/cv.tsx"></script>
+  </body>
+</html>

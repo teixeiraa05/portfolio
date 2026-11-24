@@ -1,6 +1,6 @@
 # Rodrigo Teixeira’s portfolio
 
-A single-page portfolio built with React, TypeScript, Tailwind CSS and Vite.
+A portfolio and CV site built with React, TypeScript, Tailwind CSS and Vite.
 
 Run `npm ci` to install dependencies and `npm run dev` to start the local site.
 Use `npm run build`, `npm run lint` and `npm run format:check` to validate changes.
