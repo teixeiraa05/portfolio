@@ -1,19 +1,31 @@
+import {
+  ChevronLeft,
+  ChevronRight,
+  CodeXml,
+  ExternalLink,
+  Mail,
+  MapPin,
+  Moon,
+  Plus,
+  Sun,
+  X,
+  type LucideIcon,
+} from 'lucide-react'
 import type { ReactNode } from 'react'
 
-const shapes: Record<string, ReactNode> = {
-  moon: <path d="M20.5 14A8.7 8.7 0 0 1 10 3.5 8.8 8.8 0 1 0 20.5 14Z" />,
-  sun: (
-    <>
-      <circle cx="12" cy="12" r="3.8" />
-      <path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" />
-    </>
-  ),
-  pin: (
-    <>
-      <path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" />
-      <circle cx="12" cy="10" r="2.4" />
-    </>
-  ),
+const icons: Partial<Record<string, LucideIcon>> = {
+  moon: Moon,
+  sun: Sun,
+  pin: MapPin,
+  mail: Mail,
+  close: X,
+  'external-link': ExternalLink,
+  'chevron-left': ChevronLeft,
+  'chevron-right': ChevronRight,
+  plus: Plus,
+}
+
+const originalArtwork: Partial<Record<string, ReactNode>> = {
   github: (
     <path d="M9 20c-4 1-4-2-6-2m12 4v-3.8c0-1-.4-1.7-.8-2.1 2.8-.3 5.8-1.4 5.8-6.2 0-1.4-.5-2.5-1.3-3.4.1-.4.6-1.7-.2-3.3 0 0-1.1-.4-3.6 1.3a12 12 0 0 0-6 0C6.4 2.8 5.3 3.2 5.3 3.2c-.8 1.6-.3 2.9-.2 3.3a5 5 0 0 0-1.3 3.4c0 4.8 3 5.9 5.8 6.2-.4.4-.8 1.2-.8 2.1V22" />
   ),
@@ -24,16 +36,6 @@ const shapes: Record<string, ReactNode> = {
       <circle cx="7.5" cy="7.3" r=".65" fill="currentColor" />
     </>
   ),
-  mail: (
-    <>
-      <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
-      <path d="m3.5 6 8.5 7 8.5-7" />
-    </>
-  ),
-  close: <path d="m6 6 12 12M18 6 6 18" />,
-  'chevron-left': <path d="m14 6-6 6 6 6" />,
-  'chevron-right': <path d="m10 6 6 6-6 6" />,
-  plus: <path d="M5 12h14m-7-7v14" />,
   elio: (
     <>
       <path d="m13 14 7-7V3h-4l-7 7m-3 0 8 8M3 21l6-6m-6 2 4 4" />
@@ -63,13 +65,6 @@ const shapes: Record<string, ReactNode> = {
       <ellipse cx="12" cy="9" rx="3.4" ry="1.7" fill="currentColor" />
     </>
   ),
-  tcp: (
-    <>
-      <rect x="2" y="4" width="13" height="10" rx="2" />
-      <path d="M8.5 14v4m-4 0h8m3-9h4v5" />
-      <rect x="16" y="14" width="6" height="6" rx="1.5" />
-    </>
-  ),
   serial: (
     <>
       <path d="M3 7h18l-2.2 10H5.2L3 7Z" />
@@ -77,26 +72,27 @@ const shapes: Record<string, ReactNode> = {
     </>
   ),
 }
-export function Icon({
-  name,
-  size = 18,
-}: {
-  name: keyof typeof shapes
-  size?: number
-}) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.65"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      {shapes[name]}
-    </svg>
-  )
+
+export function Icon({ name, size = 18 }: { name: string; size?: number }) {
+  const artwork = originalArtwork[name]
+  if (artwork) {
+    return (
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.65"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        {artwork}
+      </svg>
+    )
+  }
+
+  const Glyph = icons[name] ?? CodeXml
+  return <Glyph size={size} strokeWidth={1.65} aria-hidden="true" />
 }
