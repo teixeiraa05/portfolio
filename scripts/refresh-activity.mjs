@@ -1,4 +1,4 @@
-import { readFile, rename, writeFile } from 'node:fs/promises'
+import { directus, requiredEnvironment } from './directus.mjs'
 
 const dayLength = 86_400_000
 const now = new Date()
@@ -15,12 +15,6 @@ const githubLevels = {
   SECOND_QUARTILE: 2,
   THIRD_QUARTILE: 3,
   FOURTH_QUARTILE: 4,
-}
-
-function requiredEnvironment(name) {
-  const value = process.env[name]?.trim()
-  if (!value) throw new Error(`Set ${name} before refreshing activity.`)
-  return value
 }
 
 async function request(source, url, options) {
@@ -169,8 +163,7 @@ async function gitlabActivity(url, token) {
   return snapshot(days)
 }
 
-const file = new URL('../src/data/activity.json', import.meta.url)
-const activity = JSON.parse(await readFile(file, 'utf8'))
+const token = requiredEnvironment('DIRECTUS_WRITE_TOKEN')
 const providers = [
   {
     id: 'github',
@@ -187,23 +180,19 @@ const providers = [
       ),
   },
 ]
-const results = await Promise.allSettled(
-  providers.map(async ({ refresh }) => refresh()),
+await Promise.all(
+  providers.map(async ({ id, name, refresh }) => {
+    try {
+      const snapshot = await refresh()
+      await directus(`/items/activity_calendars/${id}`, {
+        method: 'PATCH',
+        token,
+        body: { snapshot },
+      })
+      console.log(`Published ${name} activity through ${end}.`)
+    } catch (error) {
+      console.error(`${name} refresh failed: ${error.message}`)
+      process.exitCode = 1
+    }
+  }),
 )
-
-for (const [index, { id, name }] of providers.entries()) {
-  const result = results[index]
-  if (result.status === 'fulfilled') {
-    activity[id] = result.value
-    console.log(`Refreshed ${name} activity through ${end}.`)
-  } else {
-    console.error(`${name} refresh failed: ${result.reason.message}`)
-    process.exitCode = 1
-  }
-}
-
-if (results.some(({ status }) => status === 'fulfilled')) {
-  const temporary = new URL(`${file.href}.${process.pid}.tmp`)
-  await writeFile(temporary, JSON.stringify(activity, null, 2) + '\n')
-  await rename(temporary, file)
-}

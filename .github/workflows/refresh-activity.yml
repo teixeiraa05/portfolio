@@ -2,13 +2,13 @@ name: Refresh contribution activity
 
 on:
   schedule:
-    - cron: '17 6 * * *'
+    - cron: '17 */6 * * *'
   workflow_dispatch:
   push:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: contribution-activity-refresh
@@ -16,33 +16,23 @@ concurrency:
 
 jobs:
   refresh:
+    if: ${{ vars.DIRECTUS_URL != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
         with:
           ref: main
-          fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-node@v7
         with:
           node-version: '24'
           package-manager-cache: false
       - name: Fetch activity
-        id: activity
         run: npm run activity:refresh
         env:
           ACTIVITY_GITHUB_TOKEN: ${{ secrets.ACTIVITY_GITHUB_UP_TOKEN }}
           ACTIVITY_GITLAB_TOKEN: ${{ secrets.ACTIVITY_GITLAB_UP_TOKEN }}
           GITLAB_PROFILE_URL: ${{ vars.GITLAB_UP_PROFILE_URL }}
-      - name: Publish refreshed snapshot
-        if: ${{ !cancelled() && steps.activity.outcome != 'skipped' }}
-        run: |
-          if git diff --quiet -- src/data/activity.json; then
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/data/activity.json
-          git commit -m 'chore: refresh contribution activity'
-          git pull --rebase origin main
-          git push origin HEAD:main
+          DIRECTUS_URL: ${{ vars.DIRECTUS_URL }}
+          DIRECTUS_WRITE_TOKEN: ${{ secrets.DIRECTUS_WRITE_TOKEN }}
