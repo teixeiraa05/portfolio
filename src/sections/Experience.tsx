@@ -4,10 +4,10 @@ export function Experience() {
   return (
     <section className="mb-10 sm:mb-13" aria-labelledby="experience">
       <SectionTitle id="experience" title="Experience" />
-      <ol className="timeline list-none p-0">
+      <ol className="list-none p-0">
         {experience.map((item) => (
           <li
-            className="timeline-entry relative flex flex-col justify-between gap-1 pb-6 pl-6 last:pb-0 min-[501px]:flex-row min-[501px]:gap-4"
+            className="timeline-entry flex flex-col justify-between gap-1 pb-6 pl-5 last:pb-0 min-[501px]:flex-row min-[501px]:gap-4"
             key={item.role}
           >
             <div>
@@ -31,9 +31,14 @@ export function Experience() {
               <small className="text-sm text-muted-foreground">
                 {item.context}
               </small>
+              {item.responsibilities && (
+                <p className="mt-1 max-w-prose text-sm leading-relaxed">
+                  {item.responsibilities}
+                </p>
+              )}
             </div>
             <span className="pt-0.5 font-mono text-xs whitespace-nowrap text-muted-foreground">
-              {item.start} – now
+              {item.start} - now
             </span>
           </li>
         ))}

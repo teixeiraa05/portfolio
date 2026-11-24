@@ -305,15 +305,19 @@ export const projects: Project[] = [
 export const experience = [
   {
     role: 'Technology Department Member',
+    responsibilities:
+      'Contributing to an environmental report platform for Quercus as a full-stack developer on a six-person team.',
     organizations: [{ name: 'JuniFEUP', logo: '/organizations/junifeup.png' }],
     start: 'Oct 2026',
     context: 'Porto',
   },
   {
     role: 'Seasonal Lifeguard',
+    responsibilities:
+      'Monitor swimmers and prevent incidents in a high-responsibility environment. Work with fellow lifeguards to protect the public and respond to emergencies, applying clear communication and teamwork.',
     organizations: [
       {
-        name: 'Bombeiros Voluntários de Valadares',
+        name: 'Associação Humanitária de Bombeiros Voluntários de Valadares',
         logo: '/organizations/bombeiros-valadares.webp',
       },
       {
