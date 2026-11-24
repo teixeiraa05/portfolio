@@ -11,3 +11,9 @@ Add shadcn/ui components with `npx shadcn@latest add <component>`. The CLI place
 
 The contribution calendar uses the checked-in snapshot in `src/data/github.json`.
 Run `npm run activity:refresh` to update that snapshot before building.
+
+The dev server regenerates both PDFs when you save `src/data/portfolio.ts` and catches up on saves made before startup.
+Use `npm run cv:watch` to watch for CV changes without running the dev server.
+For a one-off update, including after editing the CV layout, run `npm run cv:refresh`.
+Include both regenerated PDFs from `public/` with the CV changes.
+Set `CV_CHROME_PATH` if Chrome or Chromium is installed under a different executable name.
