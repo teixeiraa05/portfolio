@@ -31,9 +31,9 @@ jobs:
         id: activity
         run: npm run activity:refresh
         env:
-          ACTIVITY_GITHUB_TOKEN: ${{ secrets.ACTIVITY_GITHUB_TOKEN }}
-          ACTIVITY_GITLAB_TOKEN: ${{ secrets.ACTIVITY_GITLAB_TOKEN }}
-          GITLAB_PROFILE_URL: ${{ vars.GITLAB_PROFILE_URL }}
+          ACTIVITY_GITHUB_TOKEN: ${{ secrets.ACTIVITY_GITHUB_UP_TOKEN }}
+          ACTIVITY_GITLAB_TOKEN: ${{ secrets.ACTIVITY_GITLAB_UP_TOKEN }}
+          GITLAB_PROFILE_URL: ${{ vars.GITLAB_UP_PROFILE_URL }}
       - name: Publish refreshed snapshot
         if: ${{ !cancelled() && steps.activity.outcome != 'skipped' }}
         run: |
