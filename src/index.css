@@ -326,18 +326,22 @@
 
 @utility contribution-day {
   @apply aspect-[1.12] rounded-xs;
-  background: light-dark(#ebeeea, #303535);
+  background: color-mix(
+    in srgb,
+    var(--blue) var(--activity-intensity, 0%),
+    light-dark(#ebeeea, #303535)
+  );
   &[data-level='1'] {
-    background: light-dark(#c3d4b9, #395c42);
+    --activity-intensity: 28%;
   }
   &[data-level='2'] {
-    background: light-dark(#93b283, #567f55);
+    --activity-intensity: 48%;
   }
   &[data-level='3'] {
-    background: light-dark(#6a925c, #89ad77);
+    --activity-intensity: 70%;
   }
   &[data-level='4'] {
-    background: light-dark(#42673c, #bed9a3);
+    --activity-intensity: 94%;
   }
 }
 
