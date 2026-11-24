@@ -6,9 +6,6 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths:
-      - .github/workflows/refresh-activity.yml
-      - scripts/refresh-activity.mjs
 
 permissions:
   contents: write
@@ -31,12 +28,14 @@ jobs:
           node-version: '24'
           package-manager-cache: false
       - name: Fetch activity
+        id: activity
         run: npm run activity:refresh
         env:
           ACTIVITY_GITHUB_TOKEN: ${{ secrets.ACTIVITY_GITHUB_TOKEN }}
           ACTIVITY_GITLAB_TOKEN: ${{ secrets.ACTIVITY_GITLAB_TOKEN }}
           GITLAB_PROFILE_URL: ${{ vars.GITLAB_PROFILE_URL }}
       - name: Publish refreshed snapshot
+        if: ${{ !cancelled() && steps.activity.outcome != 'skipped' }}
         run: |
           if git diff --quiet -- src/data/activity.json; then
             exit 0

@@ -1,4 +1,4 @@
-import { rename, writeFile } from 'node:fs/promises'
+import { readFile, rename, writeFile } from 'node:fs/promises'
 
 const dayLength = 86_400_000
 const now = new Date()
@@ -169,16 +169,41 @@ async function gitlabActivity(url, token) {
   return snapshot(days)
 }
 
-const githubToken = requiredEnvironment('ACTIVITY_GITHUB_TOKEN')
-const gitlabToken = requiredEnvironment('ACTIVITY_GITLAB_TOKEN')
-const gitlabUrl = gitlabEventsUrl(requiredEnvironment('GITLAB_PROFILE_URL'))
-const [github, gitlab] = await Promise.all([
-  githubActivity(githubToken),
-  gitlabActivity(gitlabUrl, gitlabToken),
-])
-
 const file = new URL('../src/data/activity.json', import.meta.url)
-const temporary = new URL(`${file.href}.${process.pid}.tmp`)
-await writeFile(temporary, JSON.stringify({ github, gitlab }, null, 2) + '\n')
-await rename(temporary, file)
-console.log(`Refreshed GitHub and GitLab activity through ${end}.`)
+const activity = JSON.parse(await readFile(file, 'utf8'))
+const providers = [
+  {
+    id: 'github',
+    name: 'GitHub',
+    refresh: () => githubActivity(requiredEnvironment('ACTIVITY_GITHUB_TOKEN')),
+  },
+  {
+    id: 'gitlab',
+    name: 'GitLab',
+    refresh: () =>
+      gitlabActivity(
+        gitlabEventsUrl(requiredEnvironment('GITLAB_PROFILE_URL')),
+        requiredEnvironment('ACTIVITY_GITLAB_TOKEN'),
+      ),
+  },
+]
+const results = await Promise.allSettled(
+  providers.map(async ({ refresh }) => refresh()),
+)
+
+for (const [index, { id, name }] of providers.entries()) {
+  const result = results[index]
+  if (result.status === 'fulfilled') {
+    activity[id] = result.value
+    console.log(`Refreshed ${name} activity through ${end}.`)
+  } else {
+    console.error(`${name} refresh failed: ${result.reason.message}`)
+    process.exitCode = 1
+  }
+}
+
+if (results.some(({ status }) => status === 'fulfilled')) {
+  const temporary = new URL(`${file.href}.${process.pid}.tmp`)
+  await writeFile(temporary, JSON.stringify(activity, null, 2) + '\n')
+  await rename(temporary, file)
+}
