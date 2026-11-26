@@ -22,13 +22,9 @@ export function ProjectDetails({ project }: { project: Project }) {
             {course}
           </div>
         )}
-        <p className="max-w-prose text-sm leading-relaxed">{detail}</p>
-      </div>
-      <div>
-        <h4 className="m-0 text-sm font-semibold">My contributions</h4>
-        <ul className="mt-1 max-w-prose list-disc space-y-1 pl-4 text-sm leading-relaxed">
-          {contributions.map((contribution) => (
-            <li key={contribution}>{contribution}</li>
+        <ul className="m-0 max-w-prose list-disc space-y-2 pl-4 text-sm leading-relaxed">
+          {[detail, ...contributions].map((point) => (
+            <li key={point}>{point}</li>
           ))}
         </ul>
       </div>

@@ -1,6 +1,16 @@
-import { useEffect, useRef, useState, type PointerEvent } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type PointerEvent,
+  type RefObject,
+} from 'react'
+import { animateMascotJuggle, faceFootball } from './mascotJuggle'
 import type { MascotControls } from './portraitReturn'
 import atlas from '../assets/mascot.webp'
+import juggleAtlas from '../assets/mascot-juggle.webp'
 
 const kits = [
   { name: 'sky blue and white football kit', position: 'left top' },
@@ -14,10 +24,16 @@ const kits = [
 
 export function PortfolioMascot({
   mascot,
+  football,
   interrupt,
   onHold,
-}: MascotControls & { onHold: (held: boolean) => void }) {
+}: MascotControls & {
+  football: RefObject<HTMLSpanElement | null>
+  onHold: (held: boolean) => void
+}) {
   const anchor = useRef<HTMLSpanElement>(null)
+  const juggleSprite = useRef<HTMLSpanElement>(null)
+  const stopJuggling = useRef<(() => void) | null>(null)
   const grip = useRef<{
     id: number
     x: number
@@ -28,6 +44,26 @@ export function PortfolioMascot({
   const suppressClick = useRef(false)
   const [held, setHeld] = useState(false)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
+
+  const faceRestingBall = useCallback(() => {
+    const button = mascot.current
+    const ball = football.current
+    if (
+      button &&
+      ball &&
+      !stopJuggling.current &&
+      !button.hasAttribute('data-running')
+    )
+      faceFootball(
+        button,
+        button.getBoundingClientRect(),
+        ball.getBoundingClientRect(),
+      )
+  }, [football, mascot])
+
+  useLayoutEffect(() => {
+    faceRestingBall()
+  }, [faceRestingBall, offset])
 
   function start(event: PointerEvent<HTMLButtonElement>) {
     if (event.button !== 0 || !event.isPrimary) return
@@ -43,6 +79,7 @@ export function PortfolioMascot({
     )
       return
     const base = anchor.current!.getBoundingClientRect()
+    stopJuggling.current?.()
     interrupt.current?.()
     setOffset({ x: rect.left - base.left, y: rect.top - base.top })
     grip.current = {
@@ -117,12 +154,67 @@ export function PortfolioMascot({
     return () => window.removeEventListener('resize', fit)
   }, [])
 
+  useEffect(() => {
+    const button = mascot.current
+    const ball = football.current
+    const frames = juggleSprite.current
+    if (!button || !ball || !frames) return
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const stop = () => stopJuggling.current?.()
+    const attempt = () => {
+      if (
+        reducedMotion.matches ||
+        document.hidden ||
+        button.dataset.held === 'true' ||
+        button.hasAttribute('data-running') ||
+        stopJuggling.current
+      )
+        return
+
+      const cancel = animateMascotJuggle(button, ball, frames, stop)
+      stopJuggling.current = () => {
+        cancel()
+        stopJuggling.current = null
+        faceRestingBall()
+      }
+    }
+
+    const movement = new MutationObserver(() => {
+      if (button.hasAttribute('data-running')) stop()
+      else faceRestingBall()
+    })
+    movement.observe(button, { attributeFilter: ['data-running'] })
+    const first = window.setTimeout(attempt, 5000)
+    const repeat = window.setInterval(attempt, 13000)
+    window.addEventListener('resize', stop)
+    document.addEventListener('visibilitychange', stop)
+    document.fonts.addEventListener('loadingdone', faceRestingBall)
+    reducedMotion.addEventListener('change', stop)
+
+    return () => {
+      window.clearTimeout(first)
+      window.clearInterval(repeat)
+      window.removeEventListener('resize', stop)
+      document.removeEventListener('visibilitychange', stop)
+      document.fonts.removeEventListener('loadingdone', faceRestingBall)
+      reducedMotion.removeEventListener('change', stop)
+      movement.disconnect()
+      stop()
+    }
+  }, [faceRestingBall, football, mascot])
+
   const [index, setIndex] = useState(() =>
     Math.floor(Math.random() * kits.length),
   )
   const kit = kits[index]
+  const sprite = {
+    backgroundImage: `url(${atlas})`,
+    backgroundPosition: kit.position,
+  }
 
   function changeKit() {
+    stopJuggling.current?.()
     const step = 1 + Math.floor(Math.random() * (kits.length - 1))
     setIndex((current) => (current + step) % kits.length)
   }
@@ -154,13 +246,23 @@ export function PortfolioMascot({
         }}
       >
         <span
-          key={index}
-          className="mascot-sprite motion-safe:animate-kit-hop motion-safe:[.mascot-button[data-running]_&]:origin-[50%_90%] motion-safe:[.mascot-button[data-running]_&]:animate-running-stride motion-safe:[.mascot-button[data-held=true]_&]:origin-[50%_44%] motion-safe:[.mascot-button[data-held=true]_&]:animate-shirt-tug block size-full bg-size-[200%_200%] bg-no-repeat [image-rendering:pixelated]"
-          style={{
-            backgroundImage: `url(${atlas})`,
-            backgroundPosition: kit.position,
-          }}
-        />
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 [.mascot-button[data-facing=right]:not([data-running])_&]:-scale-x-100"
+        >
+          <span
+            key={index}
+            className="mascot-sprite motion-safe:animate-kit-hop motion-safe:[.mascot-button[data-running]_&]:origin-[50%_90%] motion-safe:[.mascot-button[data-running]_&]:animate-running-stride motion-safe:[.mascot-button[data-held=true]_&]:origin-[50%_44%] motion-safe:[.mascot-button[data-held=true]_&]:animate-shirt-tug block size-full bg-size-[200%_200%] bg-no-repeat [image-rendering:pixelated] [.mascot-button[data-juggling]_&]:invisible"
+            style={sprite}
+          />
+          <span
+            ref={juggleSprite}
+            className="mascot-juggle-sprite invisible absolute inset-0 bg-size-[600%_400%] bg-no-repeat [image-rendering:pixelated] [.mascot-button[data-juggling]_&]:visible"
+            style={{
+              backgroundImage: `url(${juggleAtlas})`,
+              backgroundPositionY: `${(index / (kits.length - 1)) * 100}%`,
+            }}
+          />
+        </span>
         <span className="sr-only">
           Change mascot kit. Currently wearing the {kit.name}.
         </span>

@@ -20,8 +20,7 @@
     "lucide-react": "^1.78.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "tailwindcss": "^4.3.5",
-    "use-scramble": "^2.2.15"
+    "tailwindcss": "^4.3.5"
   },
   "devDependencies": {
     "@types/node": "^24.19.2",

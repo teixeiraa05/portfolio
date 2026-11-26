@@ -79,7 +79,7 @@ export const projects: Project[] = [
     id: 'color',
     contributions: [
       'Compared four compiler register-allocation strategies in C++ and used interference graphs to model which values are live at the same time.',
-      'Examined how live-range splitting and spilling values to memory affect allocation when registers are limited. The project earned 18.6/20.',
+      'Examined how live-range splitting and spilling values to memory affect allocation when registers are limited.',
     ],
     title: 'Graph Coloring',
     date: 'May 2026',
@@ -94,7 +94,7 @@ export const projects: Project[] = [
   {
     id: 'pulse',
     contributions: [
-      'Contributed to a gym management application built with PHP, SQLite, and JavaScript, where members book classes and personal training.',
+      'Contributed to a gym management application built with where members book classes and personal training.',
       'Helped design workflows for trainers to manage schedules and rosters and for administrators to oversee memberships, capacity, and equipment.',
     ],
     galleries: [
@@ -299,6 +299,22 @@ export const projects: Project[] = [
     detail:
       'RC Lab 1 demonstrates how two computers can transfer a file over an RS-232 serial link even when the connection introduces errors. The application splits a file into packets, and the link layer uses acknowledgements and retransmissions so the receiver can reconstruct the original file.',
     url: 'https://github.com/teixeiraa05/rc_project',
+  },
+  {
+    ongoing: true,
+    id: 'tcp',
+    contributions: [
+      'Developed a command-line FTP client in C that parses an FTP URL, resolves and signs in to the server, then saves the file locally over a separate passive-mode TCP data connection.',
+      'The network experiments cover IP addressing and subnetting, two switch bridges, routing between subnets with Linux, NAT on a MikroTik router, and DNS. Packet captures show how ARP, ICMP, and DNS behave in the lab network.',
+      'The final experiment tests the downloader end to end and uses Wireshark to trace the FTP control and data connections, study TCP retransmissions and congestion control, and measure how a second download affects throughput.',
+    ],
+    title: 'RC Lab 2',
+    date: 'Nov 2026',
+    month: '2026-11',
+    summary: 'An FTP downloader in C and a hands-on study of a routed network.',
+    technologies: ['C', 'Sockets'],
+    detail:
+      'A two-part Computer Networks lab that pairs building an FTP client with configuring and analyzing the network it runs on.',
   },
 ]
 
