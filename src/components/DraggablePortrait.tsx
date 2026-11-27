@@ -160,8 +160,7 @@ export function DraggablePortrait({
   }, [pin, held, mascotHeld, mascot, interrupt, savePin])
 
   function start(event: PointerEvent<HTMLButtonElement>) {
-    if (event.pointerType !== 'mouse' || event.button !== 0 || drag.current)
-      return
+    if (!event.isPrimary || event.button !== 0 || drag.current) return
     const { origin } = measure(slot.current!)
     const { x, y } = visibleOffset(event.currentTarget)
     const position = { x: origin.x + x, y: origin.y + y }
@@ -257,13 +256,13 @@ export function DraggablePortrait({
         </button>
       )}
       <button
-        className="portrait-frame absolute inset-0 z-[4] size-full cursor-grab appearance-none select-none data-[held=true]:cursor-grabbing"
+        className="portrait-frame absolute inset-0 z-[4] size-full touch-none cursor-grab appearance-none select-none data-[held=true]:cursor-grabbing"
         type="button"
         ref={photo}
         tabIndex={-1}
         data-held={held}
         style={{ translate: `${offset.x}px ${offset.y}px` }}
-        title="Drag with your mouse · Double-click to return"
+        title="Drag to move · Double-click to return"
         aria-describedby="portrait-help"
         onPointerDown={start}
         onPointerMove={move}

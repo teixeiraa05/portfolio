@@ -2,6 +2,8 @@ import { Header } from './components/Header'
 import { About } from './sections/About'
 import { Projects } from './sections/Projects'
 import { Experience } from './sections/Experience'
+import { Education } from './sections/Education'
+import { AwardsAndCertifications } from './sections/AwardsAndCertifications'
 import { ContributionActivity } from './sections/ContributionActivity'
 
 export default function App() {
@@ -18,6 +20,8 @@ export default function App() {
         <About />
         <Projects />
         <Experience />
+        <Education />
+        <AwardsAndCertifications />
         <ContributionActivity />
       </main>
     </div>

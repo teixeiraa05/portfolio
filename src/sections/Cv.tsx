@@ -1,7 +1,13 @@
 import { ContactLinks } from '../components/ContactLinks'
 import { Header } from '../components/Header'
 import { Icon } from '../components/Icon'
-import { experience, projects } from '../data/portfolio'
+import {
+  academicMeritAwards,
+  awardsAndCertifications,
+  education,
+  experience,
+  projects,
+} from '../data/portfolio'
 import portrait from '../assets/rodrigo.webp'
 import '../cv.css'
 
@@ -60,32 +66,36 @@ export function Cv() {
               Informatics and Computing Engineering undergraduate · Porto,
               Portugal
             </p>
-            <ContactLinks showDetails />
+            <ContactLinks showDetails showPortfolio />
           </div>
           <img src={portrait} alt="Rodrigo Teixeira" />
         </header>
         <section>
           <h2>Education</h2>
-          <article>
-            <div className="cv-line">
-              <h3>Faculty of Engineering, University of Porto</h3>
-              <span>Sep 2024 - present · Expected Jun 2027</span>
-            </div>
-            <p>
-              BSc in Informatics and Computing Engineering ·{' '}
-              <strong>Average 16.03/20</strong>
-            </p>
-          </article>
-          <article>
-            <div className="cv-line">
-              <h3>Escola Secundária da Maia</h3>
-              <span>2021 - 2024</span>
-            </div>
-            <p>
-              Science and Technologies with Chemistry and Informatics
-              Applications
-            </p>
-          </article>
+          {education.map(
+            ({ school, qualification, dates, expectedGraduation, average }) => (
+              <article key={school}>
+                <div className="cv-line">
+                  <h3>{school}</h3>
+                  <span>
+                    {dates}
+                    {expectedGraduation && (
+                      <> · Expected {expectedGraduation}</>
+                    )}
+                  </span>
+                </div>
+                <p>
+                  {qualification}
+                  {average && (
+                    <>
+                      {' '}
+                      · <strong>Average {average}</strong>
+                    </>
+                  )}
+                </p>
+              </article>
+            ),
+          )}
         </section>
         <section>
           <h2>Experience</h2>
@@ -162,39 +172,25 @@ export function Cv() {
         </section>
         <section>
           <h2>Honors &amp; certifications</h2>
-          <article>
-            <div className="cv-line">
-              <div className="cv-award">
-                <h3>Cambridge C2 Proficiency in English · Grade B</h3>
-                <p className="cv-meta">Cambridge English</p>
+          {awardsAndCertifications.map(({ title, issuer, dates }) => (
+            <article key={title}>
+              <div className="cv-line">
+                <div className="cv-award">
+                  <h3>{title}</h3>
+                  <p className="cv-meta">{issuer}</p>
+                </div>
+                <span>{dates}</span>
               </div>
-              <span>2025</span>
-            </div>
-          </article>
+            </article>
+          ))}
           <article>
-            <div className="cv-line">
-              <div className="cv-award">
-                <h3>Gulbenkian Merit Scholarship</h3>
-                <p className="cv-meta">Fundação Calouste Gulbenkian</p>
-              </div>
-              <span>2024 - present</span>
-            </div>
-          </article>
-          <article>
-            <div className="cv-line">
-              <div className="cv-award">
-                <h3>Lifeguard Certification</h3>
-                <p className="cv-meta">Instituto de Socorros a Náufragos</p>
-              </div>
-              <span>2025 - 2028</span>
-            </div>
-          </article>
-          <article>
-            <h3>Merit Awards for Academic Excellence</h3>
+            <h3>{academicMeritAwards.title}</h3>
             <ul className="cv-bullets">
-              <li>Colégio Externato Imaculada Conceição · 2016</li>
-              <li>Escola EB2/3 de Gueifães · 2017 - 2021</li>
-              <li>Escola Secundária da Maia · 2022, 2023, 2024</li>
+              {academicMeritAwards.awards.map(({ school, dates }) => (
+                <li key={school}>
+                  {school} · {dates}
+                </li>
+              ))}
             </ul>
           </article>
         </section>

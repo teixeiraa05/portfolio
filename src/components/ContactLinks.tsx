@@ -3,8 +3,10 @@ import { Icon } from './Icon'
 
 export function ContactLinks({
   showDetails = false,
+  showPortfolio = false,
 }: {
   showDetails?: boolean
+  showPortfolio?: boolean
 }) {
   return (
     <div className="flex flex-wrap gap-x-5 gap-y-3">
@@ -30,6 +32,15 @@ export function ContactLinks({
         <Icon name="linkedin" />
         {showDetails ? profile.linkedin.split('/').at(-1) : 'LinkedIn'}
       </a>
+      {showPortfolio && (
+        <a
+          className="flex items-center gap-1.5 text-sm no-underline hover:underline"
+          href={profile.website}
+        >
+          <Icon name="globe" />
+          Portfolio
+        </a>
+      )}
     </div>
   )
 }

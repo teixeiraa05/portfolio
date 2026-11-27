@@ -16,14 +16,15 @@ export function ProjectDetails({ project }: { project: Project }) {
 
   return (
     <div className="grid gap-4 pb-6 min-[501px]:ml-14">
-      <div>
+      <div className="max-w-prose text-sm leading-relaxed">
         {course && (
-          <div className="mb-1 font-mono text-xs text-muted-foreground">
+          <p className="mb-3 font-mono text-xs text-muted-foreground">
             {course}
-          </div>
+          </p>
         )}
-        <ul className="m-0 max-w-prose list-disc space-y-2 pl-4 text-sm leading-relaxed">
-          {[detail, ...contributions].map((point) => (
+        <p>{detail}</p>
+        <ul className="mt-3 list-disc space-y-2 pl-4">
+          {contributions.map((point) => (
             <li key={point}>{point}</li>
           ))}
         </ul>

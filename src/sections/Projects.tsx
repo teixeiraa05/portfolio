@@ -22,11 +22,19 @@ const projectIconStyles: Record<string, string> = {
   serial: 'bg-[#e1e9ed] text-[#4d6c7a]',
 }
 
+const homeProjects = projects
+  .map(({ homeTitle, homeContributions, ...project }) => ({
+    ...project,
+    title: homeTitle ?? project.title,
+    contributions: homeContributions ?? project.contributions,
+  }))
+  .reverse()
+
 export function Projects() {
   return (
     <section className="mb-10 sm:mb-13" aria-labelledby="projects">
       <SectionTitle id="projects" title="Projects" aside="2025 — 2026" />
-      {projects.toReversed().map((project) => (
+      {homeProjects.map((project) => (
         <details
           className="project-entry group border-b border-line"
           name="portfolio-projects"

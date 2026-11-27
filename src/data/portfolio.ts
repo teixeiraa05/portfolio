@@ -1,6 +1,7 @@
 import type { Technology } from './technologies'
 
 export const profile = {
+  website: 'https://rteixeira.pt/',
   github: 'https://github.com/teixeiraa05',
   linkedin: 'https://www.linkedin.com/in/rodrigofteixeira',
   email: 'rodrigoteixeira0913@gmail.com',
@@ -17,12 +18,14 @@ export type ProjectGallery = {
 export type Project = {
   id: string
   title: string
+  homeTitle?: string
   summary: string
   date: string
   month: string
   technologies: Technology[]
   course?: string
   contributions: string[]
+  homeContributions?: string[]
   detail: string
   url?: string
   ongoing?: boolean
@@ -35,6 +38,10 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: 'elio',
+    homeContributions: [
+      'Implemented enemy wave progression and sword combat in Java.',
+      'Built the HUD manager and added JUnit tests for melee and ranged attacks.',
+    ],
     contributions: [
       'Contributed to a Java terminal role-playing game in which players choose a character class and fight increasingly difficult waves of enemies.',
       'The project brought combat, character progression, and the terminal interface together so players could adapt their strategy through upgrades.',
@@ -57,10 +64,14 @@ export const projects: Project[] = [
     summary: 'A terminal RPG set in a zombie apocalypse.',
     technologies: ['Java', 'Gradle'],
     detail:
-      'Elio is a terminal RPG about surviving a zombie apocalypse and recovering an artifact. Players choose a character class, fight waves of enemies, and use upgrades to adapt as the encounters get harder. The project brings combat, character progression, and a playable interface together in a Java terminal game.',
+      'Elio is a terminal RPG about surviving a zombie apocalypse and recovering an artifact. Players choose a character class and unlock upgrades as the encounters get harder.',
   },
   {
     id: 'flow',
+    homeContributions: [
+      'Implemented Ford–Fulkerson in C++ and added a menu for choosing between it and Edmonds–Karp.',
+      'Exported assignment networks to Graphviz DOT so reviewer matches could be visualized.',
+    ],
     contributions: [
       'Worked on translating conference reviewer assignment into a network-flow problem, with constraints for reviewer capacity and subject expertise.',
       'Used Ford-Fulkerson and Edmonds-Karp to maximize valid assignments while respecting reviewer workloads.',
@@ -72,11 +83,15 @@ export const projects: Project[] = [
     technologies: ['C++'],
     course: 'DA Project 1',
     detail:
-      'MaxFlow helps scientific conference organizers assign submissions to qualified reviewers without overloading them. It represents papers, reviewers, and capacity limits as a flow network, then uses Ford-Fulkerson and Edmonds-Karp to find as many valid assignments as possible.',
+      'MaxFlow helps scientific conference organizers assign as many submissions as possible to qualified reviewers while respecting each reviewer’s workload limit.',
     url: 'https://github.com/teixeiraa05/da-project',
   },
   {
     id: 'color',
+    homeContributions: [
+      'Implemented DSATUR graph coloring in C++ to assign registers to live values.',
+      'Refined live-range splitting and added split and spill counters to compare allocation strategies.',
+    ],
     contributions: [
       'Compared four compiler register-allocation strategies in C++ and used interference graphs to model which values are live at the same time.',
       'Examined how live-range splitting and spilling values to memory affect allocation when registers are limited.',
@@ -88,11 +103,16 @@ export const projects: Project[] = [
     technologies: ['C++'],
     course: 'DA Project 2',
     detail:
-      'Graph Coloring explores how a compiler can keep more program values in fast CPU registers when only a few registers are available. It models values that are live at the same time as neighbors in a graph, then compares four allocation strategies, including splitting live ranges and moving values to memory when needed. The project received 18.6/20.',
+      'Graph Coloring compares four strategies a compiler can use to keep program values in a limited number of CPU registers. Values that are live at the same time are represented as neighbors in an interference graph. The project received 18.6/20.',
     url: 'https://github.com/teixeiraa05/da-project-2',
   },
   {
     id: 'pulse',
+    homeContributions: [
+      'Implemented sign-up, login, and logout with PHP sessions.',
+      'Added live search for users, equipment, and classes using JavaScript fetch requests and parameterized SQLite queries in PHP.',
+      'Added personal-training reviews with SQLite storage, PHP validation, and ratings on the member dashboard.',
+    ],
     contributions: [
       'Contributed to a gym management application built with where members book classes and personal training.',
       'Helped design workflows for trainers to manage schedules and rosters and for administrators to oversee memberships, capacity, and equipment.',
@@ -177,10 +197,15 @@ export const projects: Project[] = [
     summary: 'Class scheduling and membership management for a gym.',
     technologies: ['HTML', 'CSS', 'JavaScript', 'PHP', 'SQLite'],
     detail:
-      'PulseGym puts gym bookings and day-to-day administration in one web app. Members can find classes, book personal training, and check equipment availability. Trainers can see their schedules and rosters, while administrators manage memberships, class capacity, equipment, and gym-wide activity.',
+      'PulseGym is a web app for gym bookings and administration. Members book classes and personal training, trainers manage schedules and rosters, and administrators oversee memberships and equipment.',
   },
   {
     id: 'clutch',
+    homeContributions: [
+      'Led backlog prioritization and wrote user stories as Product Owner on a three-person Scrum team.',
+      'Implemented badge criteria and scheduled weekly leaderboard awards in Convex, with unit tests.',
+      'Added public-profile navigation from the React Native leaderboard and tutoring sessions, with Maestro end-to-end tests.',
+    ],
     contributions: [
       'Served as Product Owner and developer on a three-person Agile/Scrum team, clarifying requirements, writing user stories, and prioritizing the backlog.',
       'Coordinated with teammates in sprint planning, reviews, and retrospectives.',
@@ -195,7 +220,7 @@ export const projects: Project[] = [
       'A campus peer-tutoring app built by a three-person Software Engineering team.',
     technologies: ['React Native', 'Expo', 'TypeScript', 'Convex'],
     detail:
-      'Clutch helps FEUP students who get stuck while studying find someone nearby who can help in person. A student selects a course and sends an SOS, then uses the campus map and live chat to meet a peer. They verify the session by QR code and can review each other afterward. Karma, badges, and leaderboards encourage students to keep helping. The app also supports quiet hours, occupancy information, and a separate admin analytics dashboard.',
+      'Clutch is a campus peer-tutoring app for FEUP students. A student requests help for a course, uses the map and chat to meet a peer, and verifies the session with a QR code.',
     galleries: [
       {
         title: 'Screenshots',
@@ -220,6 +245,10 @@ export const projects: Project[] = [
   },
   {
     id: 'sushi',
+    homeContributions: [
+      'Implemented the boss encounter, keyboard combo handling, and boss UI in C.',
+      'Fixed mouse-rendering lag on MINIX by reworking input handling in the game loop.',
+    ],
     contributions: [
       'Applied MINIX coursework on input and graphics drivers to a playable arcade game in C.',
       'Contributed to a project that combines mouse-driven slicing and keyboard-controlled boss encounters. Seeded rounds let players replay the same starting conditions and compare results.',
@@ -251,12 +280,16 @@ export const projects: Project[] = [
     summary: 'A sushi-slicing arcade game built for MINIX.',
     technologies: ['C', 'MINIX'],
     detail:
-      'Sushi Slash is a reflex arcade game built to put the input and graphics drivers from the MINIX coursework to use. Players slice flying sushi with the mouse, dodge bombs, and use keyboard sequences to defeat bosses. Seeded rounds let players retry the same starting conditions and compare their results.',
+      'Sushi Slash is a MINIX arcade game where players slice flying sushi and dodge bombs. They can replay a round with the same seed to compare scores.',
     url: 'https://github.com/teixeiraa05/lcom-sushi-slash',
   },
   {
     ongoing: true,
     id: 'openfloat',
+    homeContributions: [
+      'Built Laravel admin tools for filtering and editing users and inspecting their inventories.',
+      'Implemented listing moderation and report review, with Laravel feature tests for moderation actions.',
+    ],
     contributions: [
       'Developing an open-source marketplace for Counter-Strike 2 items. The project translates collector needs into listings that show item-specific details. The marketplace is designed to support buying, selling, and auctions.',
       'Worked on the backoffice for administration of the platform, including user management, item moderation, and analytics.',
@@ -287,9 +320,12 @@ export const projects: Project[] = [
   },
   {
     id: 'serial',
+    homeContributions: [
+      'Implemented packet validation and Stop-and-Wait ARQ in C, including timeout and retry handling.',
+      'Evaluated protocol efficiency with Python and plotted the results using Matplotlib.',
+    ],
     contributions: [
       'Developed a file-transfer application in C over an RS-232 serial link using Stop-and-Wait ARQ.',
-      'Worked across packet framing and link-layer reliability, using acknowledgements and retransmissions so the receiver can reconstruct a file when the connection introduces errors.',
     ],
     title: 'File Transfer Application',
     date: 'Nov 2026',
@@ -303,6 +339,7 @@ export const projects: Project[] = [
   {
     ongoing: true,
     id: 'tcp',
+    homeTitle: 'FTP Client & Network Analysis',
     contributions: [
       'Developed a command-line FTP client in C that parses an FTP URL, resolves and signs in to the server, then saves the file locally over a separate passive-mode TCP data connection.',
       'The network experiments cover IP addressing and subnetting, two switch bridges, routing between subnets with Linux, NAT on a MikroTik router, and DNS. Packet captures show how ARP, ICMP, and DNS behave in the lab network.',
@@ -330,7 +367,7 @@ export const experience = [
   {
     role: 'Seasonal Lifeguard',
     responsibilities:
-      'Monitor swimmers and prevent incidents in a high-responsibility environment. Work with fellow lifeguards to protect the public and respond to emergencies, applying clear communication and teamwork.',
+      'Monitor swimmers and prevent incidents in a high-responsibility environment. Protect the public and respond to emergencies, applying clear communication and teamwork.',
     organizations: [
       {
         name: 'Associação Humanitária de Bombeiros Voluntários de Valadares',
@@ -344,26 +381,50 @@ export const experience = [
     start: 'Jun 2025',
     context: 'Valadares',
   },
+]
+
+export const education = [
   {
-    role: 'Gulbenkian Merit Scholar',
-    organizations: [
-      {
-        name: 'Fundação Calouste Gulbenkian',
-        logo: '/organizations/gulbenkian.svg',
-      },
-    ],
-    start: 'Sep 2024',
-    context: 'Portugal',
+    school: 'Faculty of Engineering, University of Porto',
+    logo: '/organizations/feup.webp',
+    qualification: 'BSc in Informatics and Computing Engineering',
+    dates: 'Sep 2024 - present',
+    expectedGraduation: 'Jun 2027',
+    average: '16.03/20',
   },
   {
-    role: 'Informatics and Computing Engineering Student',
-    organizations: [
-      {
-        name: 'Faculty of Engineering, University of Porto',
-        logo: '/organizations/feup.webp',
-      },
-    ],
-    start: 'Sep 2024',
-    context: 'BSc · Expected Jun 2027',
+    school: 'Escola Secundária da Maia',
+    qualification:
+      'Science and Technologies with Chemistry and Informatics Applications',
+    dates: '2021 - 2024',
   },
 ]
+
+export const awardsAndCertifications = [
+  {
+    title: 'Cambridge C2 Proficiency in English · Grade B',
+    issuer: 'Cambridge English',
+    dates: '2025',
+  },
+  {
+    title: 'Gulbenkian Merit Scholarship',
+    issuer: 'Fundação Calouste Gulbenkian',
+    logo: '/organizations/gulbenkian.svg',
+    dates: '2024 - present',
+  },
+  {
+    title: 'Lifeguard Certification',
+    issuer: 'Instituto de Socorros a Náufragos',
+    logo: '/organizations/isn.png',
+    dates: '2025 - 2028',
+  },
+]
+
+export const academicMeritAwards = {
+  title: 'Merit Awards for Academic Excellence',
+  awards: [
+    { school: 'Colégio Externato Imaculada Conceição', dates: '2016' },
+    { school: 'Escola EB2/3 de Gueifães', dates: '2017 - 2021' },
+    { school: 'Escola Secundária da Maia', dates: '2022, 2023, 2024' },
+  ],
+}

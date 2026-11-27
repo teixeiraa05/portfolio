@@ -222,7 +222,7 @@ export function PortfolioMascot({
   return (
     <span
       ref={anchor}
-      className="absolute right-0 -bottom-4 size-15 min-[340px]:size-18 min-[340px]:right-auto min-[340px]:-bottom-2 min-[340px]:left-62 min-[681px]:top-1/2 min-[681px]:bottom-auto min-[681px]:left-[calc(100%-0.75rem)] min-[681px]:-translate-y-1/2"
+      className="absolute top-1/2 left-0 size-(--mascot-size) -translate-y-1/2 min-[681px]:left-[calc(100%-0.75rem)]"
     >
       <button
         ref={mascot}

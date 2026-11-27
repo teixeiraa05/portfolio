@@ -161,7 +161,8 @@
 }
 
 @utility about-layout {
-  @apply relative gap-[clamp(1.4rem,6vw,5rem)] py-11 min-[501px]:grid min-[501px]:grid-cols-[1fr_auto] min-[501px]:items-center min-[681px]:px-[0.15rem] min-[681px]:pt-[4.2rem] min-[681px]:pb-[3.85rem];
+  @apply relative grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 py-11 min-[501px]:grid-cols-[1fr_auto] min-[501px]:items-center min-[501px]:gap-[clamp(1.4rem,6vw,5rem)] min-[681px]:px-[0.15rem] min-[681px]:pt-[4.2rem] min-[681px]:pb-[3.85rem];
+  --mascot-size: clamp(2.625rem, calc(24vw - 3rem), 4.5rem);
 }
 
 @utility terminal-loading-track {
@@ -262,7 +263,11 @@
 }
 
 @utility portrait-slot {
-  @apply relative mr-5 h-[11.9rem] w-40 max-[680px]:mr-1.5 max-[680px]:h-[8.9rem] max-[680px]:w-[7.2rem] max-[500px]:absolute max-[500px]:top-[2.1rem] max-[500px]:right-1 max-[500px]:h-[5.5rem]! max-[500px]:w-[4.6rem]!;
+  @apply relative mr-5 h-[11.9rem] w-40 max-[680px]:mr-1.5 max-[680px]:h-[8.9rem] max-[680px]:w-[7.2rem];
+
+  @media (width < 501px) {
+    @apply mr-0 aspect-[4/5] h-auto w-[clamp(5rem,23vw,6.5rem)];
+  }
 }
 
 @utility portrait-frame {
