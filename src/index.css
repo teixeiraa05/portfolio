@@ -2,6 +2,7 @@
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities);
 @import 'tw-animate-css';
+@import '@fontsource/stix-two-text/latin-700-italic.css';
 
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
@@ -255,8 +256,8 @@
 }
 
 @utility monogram {
-  /* The visible letters sit below the center of the serif line box. */
-  @apply -translate-y-1 font-serif text-[2.4rem]/[0.9] font-bold italic tracking-[-0.1em];
+  @apply text-[2.4rem]/[0.9] font-bold italic tracking-[-0.08em];
+  font-family: 'STIX Two Text', var(--serif);
 }
 
 @utility brand-accent {
