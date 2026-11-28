@@ -1,4 +1,4 @@
-import { animatePortraitReturn, type MascotControls } from './portraitReturn'
+import { animatePortraitReturn } from './portraitReturn'
 import {
   useCallback,
   useEffect,
@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import type { PointerEvent } from 'react'
+import type { PointerEvent, RefObject } from 'react'
 import portrait from '../assets/rodrigo.webp'
 
 type Point = { x: number; y: number }
@@ -68,11 +68,12 @@ function locate(pin: Pin | null, bounds: ReturnType<typeof measure>): Point {
 
 export function DraggablePortrait({
   mascot,
-  interrupt,
-  mascotHeld,
-}: MascotControls & { mascotHeld: boolean }) {
+}: {
+  mascot: RefObject<HTMLButtonElement | null>
+}) {
   const slot = useRef<HTMLDivElement>(null)
   const photo = useRef<HTMLButtonElement>(null)
+  const interrupt = useRef<(() => void) | null>(null)
   const drag = useRef<Drag | null>(null)
   const frame = useRef(0)
   const [pin, setPin] = useState(readPin)
@@ -111,7 +112,7 @@ export function DraggablePortrait({
   }, [])
 
   useEffect(() => {
-    if (!pin || held || mascotHeld) return
+    if (!pin || held) return
     let stop: (() => void) | undefined
     const timer = window.setTimeout(() => {
       const anchor = slot.current
@@ -134,7 +135,7 @@ export function DraggablePortrait({
       stop = animatePortraitReturn(runner, target, anchor, offset, () =>
         savePin(null),
       )
-      // Preserve the current position when someone grabs either participant midway.
+      // Preserve the photo's current position if its return is interrupted.
       interrupt.current = () => {
         const { x, y } = visibleOffset(target)
         stop?.()
@@ -157,7 +158,7 @@ export function DraggablePortrait({
       interrupt.current = null
       stop?.()
     }
-  }, [pin, held, mascotHeld, mascot, interrupt, savePin])
+  }, [pin, held, mascot, savePin])
 
   function start(event: PointerEvent<HTMLButtonElement>) {
     if (!event.isPrimary || event.button !== 0 || drag.current) return

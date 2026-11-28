@@ -103,7 +103,7 @@ export const projects: Project[] = [
     technologies: ['C++'],
     course: 'DA Project 2',
     detail:
-      'Graph Coloring compares four strategies a compiler can use to keep program values in a limited number of CPU registers. Values that are live at the same time are represented as neighbors in an interference graph. The project received 18.6/20.',
+      'Graph Coloring compares four strategies a compiler can use to keep program values in a limited number of CPU registers. Values that are live at the same time are represented as neighbors in an interference graph.',
     url: 'https://github.com/teixeiraa05/da-project-2',
   },
   {

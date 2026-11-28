@@ -4,11 +4,9 @@ import {
   useLayoutEffect,
   useRef,
   useState,
-  type PointerEvent,
   type RefObject,
 } from 'react'
 import { animateMascotJuggle, faceFootball } from './mascotJuggle'
-import type { MascotControls } from './portraitReturn'
 import atlas from '../assets/mascot.webp'
 import juggleAtlas from '../assets/mascot-juggle.webp'
 
@@ -25,25 +23,12 @@ const kits = [
 export function PortfolioMascot({
   mascot,
   football,
-  interrupt,
-  onHold,
-}: MascotControls & {
+}: {
+  mascot: RefObject<HTMLButtonElement | null>
   football: RefObject<HTMLSpanElement | null>
-  onHold: (held: boolean) => void
 }) {
-  const anchor = useRef<HTMLSpanElement>(null)
   const juggleSprite = useRef<HTMLSpanElement>(null)
   const stopJuggling = useRef<(() => void) | null>(null)
-  const grip = useRef<{
-    id: number
-    x: number
-    y: number
-    startX: number
-    startY: number
-  } | null>(null)
-  const suppressClick = useRef(false)
-  const [held, setHeld] = useState(false)
-  const [offset, setOffset] = useState({ x: 0, y: 0 })
 
   const faceRestingBall = useCallback(() => {
     const button = mascot.current
@@ -63,96 +48,7 @@ export function PortfolioMascot({
 
   useLayoutEffect(() => {
     faceRestingBall()
-  }, [faceRestingBall, offset])
-
-  function start(event: PointerEvent<HTMLButtonElement>) {
-    if (event.button !== 0 || !event.isPrimary) return
-    suppressClick.current = false
-    const rect = event.currentTarget.getBoundingClientRect()
-    const x = event.clientX - rect.left
-    const y = event.clientY - rect.top
-    if (
-      x < rect.width * 0.24 ||
-      x > rect.width * 0.76 ||
-      y < rect.height * 0.32 ||
-      y > rect.height * 0.63
-    )
-      return
-    const base = anchor.current!.getBoundingClientRect()
-    stopJuggling.current?.()
-    interrupt.current?.()
-    setOffset({ x: rect.left - base.left, y: rect.top - base.top })
-    grip.current = {
-      id: event.pointerId,
-      x,
-      y,
-      startX: event.clientX,
-      startY: event.clientY,
-    }
-    event.currentTarget.setPointerCapture(event.pointerId)
-    onHold(true)
-    setHeld(true)
-  }
-
-  function move(event: PointerEvent<HTMLButtonElement>) {
-    const active = grip.current
-    if (!active || active.id !== event.pointerId) return
-    if (
-      !suppressClick.current &&
-      Math.hypot(event.clientX - active.startX, event.clientY - active.startY) <
-        3
-    )
-      return
-    suppressClick.current = true
-    const base = anchor.current!.getBoundingClientRect()
-    setOffset({
-      x:
-        Math.min(
-          document.documentElement.clientWidth - base.width,
-          Math.max(0, event.clientX - active.x),
-        ) - base.left,
-      y:
-        Math.min(
-          document.documentElement.scrollHeight - base.height,
-          Math.max(0, event.pageY - active.y),
-        ) -
-        window.scrollY -
-        base.top,
-    })
-  }
-
-  function finish(event: PointerEvent<HTMLButtonElement>) {
-    if (grip.current?.id !== event.pointerId) return
-    grip.current = null
-    onHold(false)
-    setHeld(false)
-  }
-
-  useEffect(() => {
-    const fit = () => {
-      const base = anchor.current!.getBoundingClientRect()
-      setOffset((current) => ({
-        x: Math.max(
-          -base.left,
-          Math.min(
-            current.x,
-            document.documentElement.clientWidth - base.right,
-          ),
-        ),
-        y: Math.max(
-          -base.top - window.scrollY,
-          Math.min(
-            current.y,
-            document.documentElement.scrollHeight -
-              window.scrollY -
-              base.bottom,
-          ),
-        ),
-      }))
-    }
-    window.addEventListener('resize', fit)
-    return () => window.removeEventListener('resize', fit)
-  }, [])
+  }, [faceRestingBall])
 
   useEffect(() => {
     const button = mascot.current
@@ -166,7 +62,6 @@ export function PortfolioMascot({
       if (
         reducedMotion.matches ||
         document.hidden ||
-        button.dataset.held === 'true' ||
         button.hasAttribute('data-running') ||
         stopJuggling.current
       )
@@ -204,9 +99,7 @@ export function PortfolioMascot({
     }
   }, [faceRestingBall, football, mascot])
 
-  const [index, setIndex] = useState(() =>
-    Math.floor(Math.random() * kits.length),
-  )
+  const [index, setIndex] = useState(0)
   const kit = kits[index]
   const sprite = {
     backgroundImage: `url(${atlas})`,
@@ -220,26 +113,13 @@ export function PortfolioMascot({
   }
 
   return (
-    <span
-      ref={anchor}
-      className="absolute top-1/2 left-0 size-(--mascot-size) -translate-y-1/2 min-[681px]:left-[calc(100%-0.75rem)]"
-    >
+    <span className="relative -ml-[min(2.5cqi,0.8125rem)] w-[clamp(2.25rem,14cqi,4.5rem)] shrink-0 self-center">
       <button
         ref={mascot}
-        style={{ translate: `${offset.x}px ${offset.y}px` }}
-        data-held={held}
-        onPointerDown={start}
-        onPointerMove={move}
-        onPointerUp={finish}
-        onPointerCancel={finish}
-        onLostPointerCapture={finish}
         type="button"
-        className="mascot-button absolute inset-0 z-[5] size-full touch-none cursor-grab data-[held=true]:cursor-grabbing border-0 bg-transparent p-0"
-        title="Drag my shirt to move me · Right-click or tap to change kit"
-        onClick={(event) => {
-          if (!suppressClick.current || event.detail === 0) changeKit()
-          suppressClick.current = false
-        }}
+        className="mascot-button absolute top-0 left-0 z-[5] aspect-square w-full -translate-y-1/2 cursor-pointer border-0 bg-transparent p-0"
+        title="Change mascot kit"
+        onClick={changeKit}
         onContextMenu={(event) => {
           event.preventDefault()
           changeKit()
@@ -251,7 +131,7 @@ export function PortfolioMascot({
         >
           <span
             key={index}
-            className="mascot-sprite motion-safe:animate-kit-hop motion-safe:[.mascot-button[data-running]_&]:origin-[50%_90%] motion-safe:[.mascot-button[data-running]_&]:animate-running-stride motion-safe:[.mascot-button[data-held=true]_&]:origin-[50%_44%] motion-safe:[.mascot-button[data-held=true]_&]:animate-shirt-tug block size-full bg-size-[200%_200%] bg-no-repeat [image-rendering:pixelated] [.mascot-button[data-juggling]_&]:invisible"
+            className="mascot-sprite motion-safe:animate-kit-hop motion-safe:[.mascot-button[data-running]_&]:origin-[50%_90%] motion-safe:[.mascot-button[data-running]_&]:animate-running-stride block size-full bg-size-[200%_200%] bg-no-repeat [image-rendering:pixelated] [.mascot-button[data-juggling]_&]:invisible"
             style={sprite}
           />
           <span

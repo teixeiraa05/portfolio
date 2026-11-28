@@ -1,10 +1,3 @@
-import type { RefObject } from 'react'
-
-export type MascotControls = {
-  mascot: RefObject<HTMLButtonElement | null>
-  interrupt: RefObject<(() => void) | null>
-}
-
 type Point = { x: number; y: number }
 
 export function animatePortraitReturn(
@@ -14,12 +7,16 @@ export function animatePortraitReturn(
   offset: Point,
   onFinish: () => void,
 ) {
-  const start = mascot.getBoundingClientRect()
+  const mascotHome = mascot.getBoundingClientRect()
   const home = slot.getBoundingClientRect()
   const side = offset.x > 0 ? 0 : home.width
   const grip = {
-    x: home.left + offset.x + side - (start.left + start.width / 2),
-    y: home.top + offset.y + home.height * 0.7 - (start.top + start.height / 2),
+    x: home.left + offset.x + side - (mascotHome.left + mascotHome.width / 2),
+    y:
+      home.top +
+      offset.y +
+      home.height * 0.7 -
+      (mascotHome.top + mascotHome.height / 2),
   }
   const drop = { x: grip.x - offset.x, y: grip.y - offset.y }
   const travelTime = (x: number, y: number) =>

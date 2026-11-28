@@ -118,7 +118,6 @@
   }
 
   h1 {
-    font-size: clamp(3rem, 6.4vw, 4.85rem);
     letter-spacing: -0.065em;
     line-height: 1.05;
   }
@@ -135,17 +134,7 @@
     letter-spacing: -0.025em;
   }
 
-  @media (max-width: 680px) {
-    h1 {
-      font-size: clamp(2.7rem, 8vw, 3.4rem);
-    }
-  }
-
   @media (max-width: 500px) {
-    h1 {
-      @apply min-h-[3.3rem] max-w-[calc(100%-5.6rem)];
-      font-size: clamp(2.1rem, 8.2vw, 2.75rem);
-    }
     h2 {
       font-size: 1.72rem;
     }
@@ -157,12 +146,40 @@
 }
 
 @utility header-layout {
-  @apply flex items-center justify-between border-b border-line py-[1.15rem] min-[501px]:pt-[1.6rem] min-[501px]:pb-[1.35rem];
+  @apply flex items-center justify-between border-b border-line pt-[1.15rem] pb-[1.025rem] min-[501px]:pt-[1.6rem] min-[501px]:pb-[1.225rem];
 }
 
 @utility about-layout {
-  @apply relative grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 py-11 min-[501px]:grid-cols-[1fr_auto] min-[501px]:items-center min-[501px]:gap-[clamp(1.4rem,6vw,5rem)] min-[681px]:px-[0.15rem] min-[681px]:pt-[4.2rem] min-[681px]:pb-[3.85rem];
-  --mascot-size: clamp(2.625rem, calc(24vw - 3rem), 4.5rem);
+  @apply relative grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 py-11 min-[501px]:items-center min-[501px]:gap-[clamp(1.4rem,6vw,5rem)] min-[681px]:px-[0.15rem] min-[681px]:pt-[4.2rem] min-[681px]:pb-[3.85rem];
+
+  @media (width < 360px) {
+    row-gap: 1rem;
+  }
+}
+
+@utility about-heading {
+  @apply flex items-center;
+  container-type: inline-size;
+
+  & h1 {
+    font-size: min(15cqi, 4.85rem);
+  }
+
+  @media (501px <= width < 681px) {
+    & h1 {
+      font-size: min(15cqi, 3.5rem);
+    }
+  }
+
+  @media (width < 501px) {
+    & h1 {
+      font-size: min(14cqi, 2.625rem);
+    }
+  }
+
+  @media (width < 360px) {
+    grid-column: 1 / -1;
+  }
 }
 
 @utility terminal-loading-track {
@@ -238,7 +255,8 @@
 }
 
 @utility monogram {
-  @apply font-serif text-[2.4rem]/[0.9] font-bold italic tracking-[-0.1em];
+  /* The visible letters sit below the center of the serif line box. */
+  @apply -translate-y-1 font-serif text-[2.4rem]/[0.9] font-bold italic tracking-[-0.1em];
 }
 
 @utility brand-accent {
@@ -246,7 +264,7 @@
 }
 
 @utility bio {
-  @apply mt-4 mb-[1.45rem] max-w-[33rem] text-[1.08rem]/[1.65] max-[680px]:text-base/[1.65] max-[500px]:mt-[1.6rem] max-[500px]:mb-[1.2rem];
+  @apply mt-4 mb-[1.45rem] max-w-[33rem] text-[1.08rem]/[1.65] max-[680px]:text-base/[1.65] max-[500px]:mt-2 max-[500px]:mb-[1.2rem] max-[360px]:mt-0;
   color: light-dark(#515659, #c2c7c3);
 
   & a {
@@ -263,10 +281,14 @@
 }
 
 @utility portrait-slot {
-  @apply relative mr-5 h-[11.9rem] w-40 max-[680px]:mr-1.5 max-[680px]:h-[8.9rem] max-[680px]:w-[7.2rem];
+  @apply relative mr-5 aspect-[16/19] w-[clamp(10.25rem,20vw,11.5rem)];
+
+  @media (width < 681px) {
+    @apply mr-1.5 w-32;
+  }
 
   @media (width < 501px) {
-    @apply mr-0 aspect-[4/5] h-auto w-[clamp(5rem,23vw,6.5rem)];
+    @apply mr-0 aspect-[4/5] w-[clamp(5.5rem,26vw,7.5rem)];
   }
 }
 
@@ -385,7 +407,6 @@
 @theme {
   --animate-kit-hop: kit-hop 220ms ease-out;
   --animate-running-stride: running-stride 175ms ease-in-out infinite alternate;
-  --animate-shirt-tug: shirt-tug 430ms ease-in-out infinite alternate;
 
   @keyframes kit-hop {
     40% {
@@ -398,14 +419,6 @@
     }
     to {
       transform: translateY(-5px) rotate(5deg);
-    }
-  }
-  @keyframes shirt-tug {
-    from {
-      transform: rotate(-6deg) scale(0.94, 1.09);
-    }
-    to {
-      transform: translateY(1px) rotate(5deg) scale(0.96, 1.06);
     }
   }
 }
