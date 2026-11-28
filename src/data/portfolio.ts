@@ -23,7 +23,7 @@ export type Project = {
   date: string
   month: string
   technologies: Technology[]
-  course?: string
+  course?: { name: string; academicYear: string }
   contributions: string[]
   homeContributions?: string[]
   detail: string
@@ -63,6 +63,10 @@ export const projects: Project[] = [
     month: '2025-12',
     summary: 'A terminal RPG set in a zombie apocalypse.',
     technologies: ['Java', 'Gradle'],
+    course: {
+      name: 'Software Design and Testing Laboratory',
+      academicYear: '2025/26',
+    },
     detail:
       'Elio is a terminal RPG about surviving a zombie apocalypse and recovering an artifact. Players choose a character class and unlock upgrades as the encounters get harder.',
   },
@@ -81,7 +85,7 @@ export const projects: Project[] = [
     month: '2026-03',
     summary: 'Matching conference papers with reviewers.',
     technologies: ['C++'],
-    course: 'DA Project 1',
+    course: { name: 'Algorithm Design Project 1', academicYear: '2025/26' },
     detail:
       'MaxFlow helps scientific conference organizers assign as many submissions as possible to qualified reviewers while respecting each reviewer’s workload limit.',
     url: 'https://github.com/teixeiraa05/da-project',
@@ -101,7 +105,7 @@ export const projects: Project[] = [
     month: '2026-05',
     summary: 'Compiler register allocation through graph coloring.',
     technologies: ['C++'],
-    course: 'DA Project 2',
+    course: { name: 'Algorithm Design Project 2', academicYear: '2025/26' },
     detail:
       'Graph Coloring compares four strategies a compiler can use to keep program values in a limited number of CPU registers. Values that are live at the same time are represented as neighbors in an interference graph.',
     url: 'https://github.com/teixeiraa05/da-project-2',
@@ -196,6 +200,7 @@ export const projects: Project[] = [
     month: '2026-05',
     summary: 'Class scheduling and membership management for a gym.',
     technologies: ['HTML', 'CSS', 'JavaScript', 'PHP', 'SQLite'],
+    course: { name: 'Web Languages and Technologies', academicYear: '2025/26' },
     detail:
       'PulseGym is a web app for gym bookings and administration. Members book classes and personal training, trainers manage schedules and rosters, and administrators oversee memberships and equipment.',
   },
@@ -219,6 +224,7 @@ export const projects: Project[] = [
     summary:
       'A campus peer-tutoring app built by a three-person Software Engineering team.',
     technologies: ['React Native', 'Expo', 'TypeScript', 'Convex'],
+    course: { name: 'Software Engineering Project', academicYear: '2025/26' },
     detail:
       'Clutch is a campus peer-tutoring app for FEUP students. A student requests help for a course, uses the map and chat to meet a peer, and verifies the session with a QR code.',
     galleries: [
@@ -279,6 +285,7 @@ export const projects: Project[] = [
     month: '2026-06',
     summary: 'A sushi-slicing arcade game built for MINIX.',
     technologies: ['C', 'MINIX'],
+    course: { name: 'Computer Laboratory', academicYear: '2025/26' },
     detail:
       'Sushi Slash is a MINIX arcade game where players slice flying sushi and dodge bombs. They can replay a round with the same seed to compare scores.',
     url: 'https://github.com/teixeiraa05/lcom-sushi-slash',
@@ -314,6 +321,10 @@ export const projects: Project[] = [
     month: '2026-09',
     summary: 'An open-source marketplace for Counter-Strike 2 items.',
     technologies: ['Laravel', 'PostgreSQL'],
+    course: {
+      name: 'Database and Web Applications Laboratory',
+      academicYear: '2026/27',
+    },
     detail:
       'OpenFloat is an open-source marketplace in development for Counter-Strike 2 collectors. It is designed to let people browse, buy, sell, and auction skins while comparing the details that distinguish individual items, such as float and paint seed.',
     url: 'https://github.com/getopenfloat/openfloat',
@@ -332,6 +343,7 @@ export const projects: Project[] = [
     month: '2026-11',
     summary: 'Reliable file transfer over a serial connection.',
     technologies: ['C'],
+    course: { name: 'Computer Networks', academicYear: '2026/27' },
     detail:
       'RC Lab 1 demonstrates how two computers can transfer a file over an RS-232 serial link even when the connection introduces errors. The application splits a file into packets, and the link layer uses acknowledgements and retransmissions so the receiver can reconstruct the original file.',
     url: 'https://github.com/teixeiraa05/rc_project',
@@ -350,6 +362,7 @@ export const projects: Project[] = [
     month: '2026-11',
     summary: 'An FTP downloader in C and a hands-on study of a routed network.',
     technologies: ['C', 'Sockets'],
+    course: { name: 'Computer Networks', academicYear: '2026/27' },
     detail:
       'A two-part Computer Networks lab that pairs building an FTP client with configuring and analyzing the network it runs on.',
   },

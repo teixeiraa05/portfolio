@@ -15,11 +15,11 @@ export function ProjectDetails({ project }: { project: Project }) {
   } = project
 
   return (
-    <div className="grid gap-4 pb-6 min-[501px]:ml-14">
+    <div className="grid gap-4 px-0.5 pb-6 min-[501px]:ml-14">
       <div className="max-w-prose text-sm leading-relaxed">
         {course && (
-          <p className="mb-3 font-mono text-xs text-muted-foreground">
-            {course}
+          <p className="mb-2 text-xs text-muted-foreground">
+            {course.name} · FEUP, University of Porto · {course.academicYear}
           </p>
         )}
         <p>{detail}</p>
