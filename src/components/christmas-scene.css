@@ -1,0 +1,221 @@
+.christmas-scene {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+  justify-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 0 1rem;
+  pointer-events: none;
+  user-select: none;
+  font-family: var(--mono);
+  font-size: min(2.2vw, 0.6875rem);
+  line-height: 1.25;
+
+  pre {
+    margin: 0;
+    font-family: inherit;
+    font-variant-ligatures: none;
+  }
+
+  .tree {
+    color: light-dark(#286445, #80bc91);
+  }
+
+  .fireplace {
+    position: relative;
+    color: light-dark(#775947, #bd987e);
+  }
+
+  .fire-frame {
+    /* Keep the six flame rows inside the firebox above the logs. */
+    position: absolute;
+    inset-block-end: 4lh;
+    inset-inline-start: 7ch;
+  }
+
+  .fire-frame ~ .fire-frame {
+    opacity: 0;
+  }
+
+  .star,
+  .gold {
+    color: light-dark(#94680c, #f0cb73);
+  }
+
+  .red {
+    color: light-dark(#aa423f, #f18c86);
+  }
+
+  .blue {
+    color: light-dark(#316da3, #92c4ee);
+  }
+
+  .violet {
+    color: light-dark(#81549d, #c69bec);
+  }
+
+  .garland {
+    color: light-dark(#8c691d, #c5a963);
+  }
+
+  .bark,
+  .log,
+  .stone-seam {
+    color: light-dark(#845e43, #a67c62);
+  }
+
+  .flame-tip,
+  .spark {
+    color: light-dark(#966100, #ffe09a);
+  }
+
+  .flame-core {
+    color: light-dark(#b14d1a, #ffaa64);
+  }
+
+  .flame-edge,
+  .ember {
+    color: light-dark(#ab4029, #e17d62);
+  }
+
+  .flame-hot {
+    color: light-dark(#9d5500, #ffce7d);
+  }
+
+  .smoke {
+    color: light-dark(#69747b, #a9b4ba);
+  }
+}
+
+/* Switch to the gutters only when both figures fit beside the 56rem shell. */
+@media (min-width: 80rem) {
+  .activity-layout {
+    > .activity-content,
+    > .christmas-scene {
+      grid-area: 1 / 1;
+    }
+
+    > .christmas-scene {
+      align-items: center;
+      padding-block: 1rem;
+    }
+  }
+
+  .christmas-scene {
+    --gutter-center-offset: calc((100vw - 56rem) / 4);
+    font-size: clamp(0.625rem, 0.78vw, 0.875rem);
+
+    .tree {
+      justify-self: start;
+      translate: calc(-50% - var(--gutter-center-offset));
+    }
+
+    .fireplace {
+      justify-self: end;
+      translate: calc(50% + var(--gutter-center-offset));
+    }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .christmas-scene {
+    .light {
+      animation: christmas-twinkle 2.4s ease-in-out infinite alternate;
+    }
+
+    .light:nth-of-type(3n) {
+      animation-delay: -1.2s;
+    }
+
+    .light:nth-of-type(3n + 1) {
+      animation-delay: -2.1s;
+    }
+
+    .fire-frame {
+      animation: christmas-fire-frame 0.8s steps(1, end) infinite;
+    }
+
+    .fire-frame:nth-of-type(3) {
+      animation-delay: -0.6s;
+    }
+
+    .fire-frame:nth-of-type(4) {
+      animation-delay: -0.4s;
+    }
+
+    .fire-frame:nth-of-type(5) {
+      animation-delay: -0.2s;
+    }
+
+    .smoke {
+      display: inline-block;
+      animation: christmas-smoke 3s ease-in-out infinite;
+    }
+
+    .smoke:nth-of-type(even) {
+      animation-delay: -1.5s;
+    }
+
+    .spark {
+      display: inline-block;
+      animation: christmas-spark 2.2s ease-out infinite;
+    }
+
+    .spark:nth-of-type(even) {
+      animation-delay: -1.1s;
+    }
+  }
+}
+
+@keyframes christmas-twinkle {
+  from {
+    opacity: 0.45;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes christmas-fire-frame {
+  from {
+    opacity: 1;
+  }
+  25%,
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes christmas-smoke {
+  0% {
+    opacity: 0;
+    translate: 0 0.25em;
+  }
+  35% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    translate: 0.65em -0.75em;
+  }
+}
+
+@keyframes christmas-spark {
+  0% {
+    opacity: 0;
+    translate: 0 0.35em;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    translate: 0 -0.65em;
+  }
+}
+
+@media print {
+  .christmas-scene {
+    display: none;
+  }
+}

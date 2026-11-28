@@ -1,4 +1,4 @@
-import { Header } from './components/Header'
+import { PageShell } from './components/PageShell'
 import { About } from './sections/About'
 import { Projects } from './sections/Projects'
 import { Experience } from './sections/Experience'
@@ -8,22 +8,17 @@ import { ContributionActivity } from './sections/ContributionActivity'
 
 export default function App() {
   return (
-    <div className="page-shell outline-none" id="home" tabIndex={-1}>
-      <a
-        className="sr-only z-10 bg-surface px-4 py-2 focus:not-sr-only focus:absolute"
-        href="#content"
-      >
-        Skip to content
-      </a>
-      <Header />
-      <main id="content">
-        <About />
-        <Projects />
-        <Experience />
-        <Education />
-        <AwardsAndCertifications />
-        <ContributionActivity />
-      </main>
-    </div>
+    <PageShell>
+      {(scene) => (
+        <main id="content">
+          <About />
+          <Projects />
+          <Experience />
+          <Education />
+          <AwardsAndCertifications />
+          <ContributionActivity scene={scene} />
+        </main>
+      )}
+    </PageShell>
   )
 }

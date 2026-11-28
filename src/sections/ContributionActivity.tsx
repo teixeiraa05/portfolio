@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
 import { SectionTitle } from '../components/SectionTitle'
 import snapshot, { type Snapshot } from 'virtual:github-calendar'
 
@@ -124,24 +124,30 @@ function ContributionCalendar({ snapshot }: { snapshot: Snapshot }) {
   )
 }
 
-export function ContributionActivity() {
+export function ContributionActivity({ scene }: { scene?: ReactNode }) {
   return (
-    <section className="mb-10 sm:mb-13" aria-labelledby="activity">
-      <SectionTitle id="activity" title="GitHub activity" />
-      <div className="rounded-xl border border-line bg-surface p-5">
-        {snapshot ? (
-          <>
-            <p className="mb-4 text-right text-sm font-semibold">
-              {activityAmount(snapshot.total)}
+    <section
+      className="activity-layout mb-10 grid items-center sm:mb-13"
+      aria-labelledby="activity"
+    >
+      <div className="activity-content min-w-0">
+        <SectionTitle id="activity" title="GitHub activity" />
+        <div className="rounded-xl border border-line bg-surface p-5">
+          {snapshot ? (
+            <>
+              <p className="mb-4 text-right text-sm font-semibold">
+                {activityAmount(snapshot.total)}
+              </p>
+              <ContributionCalendar snapshot={snapshot} />
+            </>
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              GitHub activity is currently unavailable.
             </p>
-            <ContributionCalendar snapshot={snapshot} />
-          </>
-        ) : (
-          <p className="text-sm text-muted-foreground">
-            GitHub activity is currently unavailable.
-          </p>
-        )}
+          )}
+        </div>
       </div>
+      {scene}
     </section>
   )
 }

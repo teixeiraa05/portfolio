@@ -1,6 +1,6 @@
 import { ContactLinks } from '../components/ContactLinks'
-import { Header } from '../components/Header'
 import { Icon } from '../components/Icon'
+import { PageShell } from '../components/PageShell'
 import {
   academicMeritAwards,
   awardsAndCertifications,
@@ -33,11 +33,7 @@ export function Cv() {
     : orderedProjects
 
   return (
-    <div id="home" className="page-shell cv" tabIndex={-1}>
-      <a className="sr-only focus:not-sr-only" href="#content">
-        Skip to content
-      </a>
-      <Header cv />
+    <PageShell cv>
       <main id="content">
         <nav className="cv-pdf-links" aria-label="Curriculum vitae PDFs">
           <a href="/RodrigoTeixeira_CV.pdf" target="_blank" rel="noopener">
@@ -195,6 +191,6 @@ export function Cv() {
           </article>
         </section>
       </main>
-    </div>
+    </PageShell>
   )
 }

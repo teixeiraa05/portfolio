@@ -1,10 +1,15 @@
-import { useEffect } from 'react'
-import { ChristmasMode, christmasModeAvailable } from './ChristmasMode'
+import { useEffect, type ReactNode } from 'react'
 import { Icon } from './Icon'
 
 import { ThemeToggle } from './ThemeToggle'
 
-export function Header({ cv = false }: { cv?: boolean }) {
+export function Header({
+  cv,
+  christmasControl,
+}: {
+  cv: boolean
+  christmasControl?: ReactNode
+}) {
   useEffect(() => {
     const navigate = (event: KeyboardEvent) => {
       const element = event.target
@@ -42,7 +47,7 @@ export function Header({ cv = false }: { cv?: boolean }) {
   return (
     <header
       className={
-        christmasModeAvailable
+        christmasControl
           ? 'header-layout flex-wrap gap-x-3 gap-y-2'
           : 'header-layout'
       }
@@ -82,7 +87,7 @@ export function Header({ cv = false }: { cv?: boolean }) {
       <div className="ml-auto flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
         <Icon name="pin" size={15} /> Porto, PT
         <ThemeToggle />
-        {christmasModeAvailable && <ChristmasMode />}
+        {christmasControl}
       </div>
     </header>
   )
