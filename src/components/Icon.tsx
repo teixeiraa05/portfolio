@@ -8,6 +8,7 @@ import {
   MapPin,
   Moon,
   Plus,
+  Snowflake,
   Sun,
   X,
   type LucideIcon,
@@ -17,6 +18,7 @@ import type { ReactNode } from 'react'
 const icons: Partial<Record<string, LucideIcon>> = {
   moon: Moon,
   sun: Sun,
+  snowflake: Snowflake,
   pin: MapPin,
   mail: Mail,
   globe: Globe,

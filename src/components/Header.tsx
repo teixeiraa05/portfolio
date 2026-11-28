@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { ChristmasMode, christmasModeAvailable } from './ChristmasMode'
 import { Icon } from './Icon'
 
 import { ThemeToggle } from './ThemeToggle'
@@ -39,7 +40,13 @@ export function Header({ cv = false }: { cv?: boolean }) {
     }
   }, [cv])
   return (
-    <header className="header-layout">
+    <header
+      className={
+        christmasModeAvailable
+          ? 'header-layout flex-wrap gap-x-3 gap-y-2'
+          : 'header-layout'
+      }
+    >
       <nav className="flex items-center gap-2 min-[501px]:gap-4">
         <span className="monogram" aria-hidden="true">
           rt<span className="brand-accent">.</span>
@@ -72,9 +79,10 @@ export function Header({ cv = false }: { cv?: boolean }) {
           CV
         </a>
       </nav>
-      <div className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+      <div className="ml-auto flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
         <Icon name="pin" size={15} /> Porto, PT
         <ThemeToggle />
+        {christmasModeAvailable && <ChristmasMode />}
       </div>
     </header>
   )

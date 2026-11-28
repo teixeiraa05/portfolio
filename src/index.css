@@ -150,6 +150,10 @@
   @apply flex items-center justify-between border-b border-line pt-[1.15rem] pb-[1.025rem] min-[501px]:pt-[1.6rem] min-[501px]:pb-[1.225rem];
 }
 
+@utility header-toggle {
+  @apply grid size-[2.15rem] shrink-0 cursor-pointer place-items-center rounded-full border border-line bg-surface text-ink hover:border-current hover:text-primary;
+}
+
 @utility about-layout {
   @apply relative grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 py-11 min-[501px]:items-center min-[501px]:gap-[clamp(1.4rem,6vw,5rem)] min-[681px]:px-[0.15rem] min-[681px]:pt-[4.2rem] min-[681px]:pb-[3.85rem];
 
